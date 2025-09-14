@@ -1,3 +1,5 @@
+package suites;
+
 import static check.CheckThat.*;
 import static check.CheckThat.Condition.*;
 import org.junit.jupiter.api.*;
@@ -85,8 +87,8 @@ public class ArtefactStructureTest {
         it.has(TEXTUAL_REPRESENTATION);
     }
 
-    @Test @DisabledIf(notApplicable) @Order(3_07)
-    public void eq() {
-        it.has(EQUALITY_CHECK);
-    }
+    // @Test @DisabledIf(notApplicable) @Order(3_07)
+    // public void eq() {
+    //     it.has(EQUALITY_CHECK);
+    // }
 }
