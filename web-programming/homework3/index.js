@@ -4,6 +4,7 @@ const table = document.querySelector("tbody");
 const select = document.querySelector("select");
 const transferButton = document.querySelector("button");
 
+
 console.log(people);
 
 let row1 = document.createElement("tr");
