@@ -35,7 +35,7 @@ public class RegularHexagon extends Shape {
 
     /**
      * Calculates and returns the area of the bounding box that encompasses this regular hexagon.
-     * The bounding box is a rectangle with width = 2 * side and height = √3 * side.
+     * The bounding box is a rectangle with width = 2 * side and height = sqrt(3) * side.
      *
      * @return the area of the rectangular bounding box (width * height)
      */

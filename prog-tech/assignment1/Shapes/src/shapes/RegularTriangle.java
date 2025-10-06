@@ -36,7 +36,7 @@ public class RegularTriangle extends Shape {
     /**
      * Calculates and returns the area of the bounding box that encompasses this regular triangle.
      * The bounding box is a rectangle with width equal to the side length and height calculated
-     * using the formula: height = (√3 / 2) * side.
+     * using the formula: height = (sqrt(3) / 2) * side.
      *
      * @return the area of the rectangular bounding box (side * height)
      */
