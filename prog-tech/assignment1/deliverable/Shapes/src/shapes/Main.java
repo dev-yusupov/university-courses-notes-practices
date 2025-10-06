@@ -3,31 +3,12 @@ package shapes;
 import java.io.*;
 import java.util.*;
 
-/**
- * Main application class for processing geometric shapes from a data file.
- * This program reads shape data from "data.txt", creates corresponding shape objects,
- * and finds the shape with the largest bounding box area.
- * 
- * The expected file format is:
- * - First line: number of shapes (integer)
- * - Following lines: shape data in format "TYPE X Y SIZE"
- *   where TYPE is C (Circle), S (Square), T (Triangle), or H (Hexagon)
- *
- * @author Yusupov Boburjon
- */
 public class Main {
 
-    /**
-     * Main method that processes shape data and finds the shape with the largest bounding box.
-     * Reads shape definitions from "data.txt" file, creates appropriate shape objects,
-     * and outputs the shape with the maximum bounding box area.
-     *
-     * @param args command line arguments (not used)
-     */
     public static void main(String[] args) {
         List<Shape> shapes = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("data4.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
             String firstLine = br.readLine();
             if (firstLine == null) {
                 throw new IOException("File is empty.");
@@ -118,7 +99,6 @@ public class Main {
         double maxArea = -1;
 
         for (Shape s : shapes) {
-            System.out.println(s);
             double area = s.getBoundingBoxArea();
             if (area > maxArea) {
                 maxArea = area;
