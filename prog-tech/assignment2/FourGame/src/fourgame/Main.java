@@ -2,16 +2,33 @@ package fourgame;
 
 import javax.swing.*;
 
+/**
+ * Main entry point for the Four Game application.
+ * This class handles game initialization and board size selection.
+ * It provides test hooks for automated testing.
+ */
 public class Main {
 
     // Test hook: forces board size if not null
     public static Integer testBoardSize = null;
     public static boolean testMode = false;
 
+    /**
+     * Application entry point.
+     * Launches the game on the Event Dispatch Thread.
+     * 
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::startGame);
     }
     
+    /**
+     * Starts a new game by displaying board size selection dialog
+     * and creating a new GameFrame with the selected size.
+     * If in test mode, uses the testBoardSize instead of showing a dialog.
+     * Supports board sizes: 3x3, 5x5, and 7x7.
+     */
     public static void startGame() {
 
         int size;

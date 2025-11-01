@@ -30,7 +30,7 @@ public class GameFrameTest {
     @Test
     public void testFrameCreated() {
         assertNotNull(testFrame);
-        assertEquals("Reach 4 Game", testFrame.getTitle());
+        assertEquals("Four Game", testFrame.getTitle());
         assertTrue(testFrame.isDisplayable());
     }
 
@@ -69,9 +69,9 @@ public class GameFrameTest {
             TestGameFrame frame = (TestGameFrame) testFrame;
 
             // force model full to end immediately
-            for (int r = 0; r < frame.getModel().size; r++) {
-                for (int c = 0; c < frame.getModel().size; c++) {
-                    frame.getModel().values[r][c] = 4;
+            for (int r = 0; r < frame.getModel().getSize(); r++) {
+                for (int c = 0; c < frame.getModel().getSize(); c++) {
+                    frame.getModel().setValue(r, c, 4);
                 }
             }
 

@@ -10,15 +10,15 @@ public class GameModelTest {
     public void testInitialState() {
         GameModel model = new GameModel(3);
 
-        assertEquals(3, model.size);
+        assertEquals(3, model.getSize());
         assertFalse(model.isGameOver());
-        assertEquals(0, model.redScore);
-        assertEquals(0, model.blueScore);
+        assertEquals(0, model.getRedScore());
+        assertEquals(0, model.getBlueScore());
         assertTrue(model.getPlayerOneTurn());
 
-        for (int[] row : model.values) {
-            for (int v : row) {
-                assertEquals(0, v);
+        for (int r = 0; r < model.getSize(); r++) {
+            for (int c = 0; c < model.getSize(); c++) {
+                assertEquals(0, model.getValue(r, c));
             }
         }
     }
@@ -30,11 +30,11 @@ public class GameModelTest {
         model.increment(1,1);
 
         // center + 4 neighbors should be 1
-        assertEquals(1, model.values[1][1]); // center
-        assertEquals(1, model.values[0][1]); // up
-        assertEquals(1, model.values[2][1]); // down
-        assertEquals(1, model.values[1][0]); // left
-        assertEquals(1, model.values[1][2]); // right
+        assertEquals(1, model.getValue(1, 1)); // center
+        assertEquals(1, model.getValue(0, 1)); // up
+        assertEquals(1, model.getValue(2, 1)); // down
+        assertEquals(1, model.getValue(1, 0)); // left
+        assertEquals(1, model.getValue(1, 2)); // right
     }
 
     @Test
@@ -43,12 +43,12 @@ public class GameModelTest {
 
         model.increment(0,0); // top-left corner
 
-        assertEquals(1, model.values[0][0]);
-        assertEquals(1, model.values[1][0]);
-        assertEquals(1, model.values[0][1]);
+        assertEquals(1, model.getValue(0, 0));
+        assertEquals(1, model.getValue(1, 0));
+        assertEquals(1, model.getValue(0, 1));
 
         // ensure no invalid access increment
-        assertEquals(0, model.values[2][2]);
+        assertEquals(0, model.getValue(2, 2));
     }
 
     @Test
@@ -60,10 +60,10 @@ public class GameModelTest {
             model.increment(1,1);
         }
 
-        assertEquals(4, model.values[1][1]);
-        assertEquals(1, model.redScore);
-        assertEquals(0, model.blueScore);
-        assertEquals(1, model.owner[1][1]);
+        assertEquals(4, model.getValue(1, 1));
+        assertEquals(1, model.getRedScore());
+        assertEquals(0, model.getBlueScore());
+        assertEquals(1, model.getOwnerAt(1, 1));
     }
 
     @Test
@@ -76,10 +76,10 @@ public class GameModelTest {
             model.increment(1,1);
         }
 
-        assertEquals(4, model.values[1][1]);
-        assertEquals(0, model.redScore);
-        assertEquals(1, model.blueScore);
-        assertEquals(2, model.owner[1][1]);
+        assertEquals(4, model.getValue(1, 1));
+        assertEquals(0, model.getRedScore());
+        assertEquals(1, model.getBlueScore());
+        assertEquals(2, model.getOwnerAt(1, 1));
     }
 
     @Test
@@ -122,8 +122,8 @@ public class GameModelTest {
             model.increment(1,1);
         }
 
-        assertEquals(4, model.values[1][1]);
-        assertEquals(1, model.redScore);
+        assertEquals(4, model.getValue(1, 1));
+        assertEquals(1, model.getRedScore());
     }
     
     @Test
@@ -132,9 +132,9 @@ public class GameModelTest {
             TestGameFrame frame = new TestGameFrame(3);
 
             // Make board full
-            for (int r = 0; r < frame.getModel().size; r++) {
-                for (int c = 0; c < frame.getModel().size; c++) {
-                    frame.getModel().values[r][c] = 4;
+            for (int r = 0; r < frame.getModel().getSize(); r++) {
+                for (int c = 0; c < frame.getModel().getSize(); c++) {
+                    frame.getModel().setValue(r, c, 4);
                 }
             }
 

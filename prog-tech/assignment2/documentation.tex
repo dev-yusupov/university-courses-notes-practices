@@ -1,0 +1,390 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{float}
+
+\geometry{margin=0.7in}
+
+% Code listing style
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    language=Java,
+    tabsize=4,
+    showstringspaces=false,
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red}
+}
+
+\title{\textbf{Four Game}}
+\author{Yusupov Boburjon\\Neptun: YTAJDI}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\section{Description of the Exercise}
+
+This a two-player game is played on a board consists of n x n fields, where each field contains a value 
+between 0 and 4. Initially, all the fields contain the value of 0. If a player chooses a field, then the 
+value of the field and its neighbours incremented by one (if the value is less than 4). The player’s 
+score represents how many fields did he make to have the value of 4. If a value of a field reaches 4, 
+then the field is colorized with the color of the actual player (red or blue). The game ends, when all 
+fields have the value of 4. The player having the higher score wins. 
+Implement this game, and let the board size be selectable (3x3, 5x5, 7x7). The game should recognize 
+if it is ended, and it has to show in a message box which player won. After this, a new game should 
+be started automatically.
+
+\newpage
+
+\section{Class Diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagram.png}
+    \label{fig:class-diagram}
+\end{figure}
+
+\subsection{Class Overview}
+
+The application follows an object-oriented design with three main classes:
+
+\begin{itemize}
+    \item \textbf{Main}: Entry point and game launcher
+    \item \textbf{GameFrame}: User interface and game controller
+    \item \textbf{GameModel}: Game logic and state management
+\end{itemize}
+
+\newpage
+
+\section{Class and Method Descriptions}
+
+\subsection{Main Class}
+
+The \texttt{Main} class serves as the entry point for the application and handles game initialization.
+
+\subsubsection{Fields}
+\begin{itemize}
+    \item \texttt{testBoardSize: Integer} -- Static field for testing purposes to force a specific board size
+    \item \texttt{testMode: boolean} -- Static flag to enable test mode (disables popups)
+\end{itemize}
+
+\subsubsection{Methods}
+
+\begin{itemize}
+    \item \texttt{main(args: String[]): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Application entry point
+        \item \textbf{Description}: Invokes the \texttt{startGame()} method on the Event Dispatch Thread using \texttt{SwingUtilities.invokeLater()}
+        \item \textbf{Parameters}: Command-line arguments (not used)
+        \item \textbf{Returns}: void
+    \end{itemize}
+    
+    \item \texttt{startGame(): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Initializes and starts a new game
+        \item \textbf{Description}: Displays a dialog for board size selection (3x3, 5x5, or 7x7), creates a new \texttt{GameFrame} instance with the selected size, and handles test mode for automated testing
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: void
+    \end{itemize}
+\end{itemize}
+
+\subsection{GameModel Class}
+
+The \texttt{GameModel} class encapsulates the game logic and state. It maintains the board values, ownership, scores, and player turn information.
+
+\subsubsection{Fields}
+\begin{itemize}
+    \item \texttt{size: int} -- The dimension of the square board (3, 5, or 7)
+    \item \texttt{values: int[][]} -- 2D array storing the current value (0-4) of each field
+    \item \texttt{owner: int[][]} -- 2D array storing the owner of each field (0=none, 1=red, 2=blue)
+    \item \texttt{redScore: int} -- Count of fields that reached 4 by the red player
+    \item \texttt{blueScore: int} -- Count of fields that reached 4 by the blue player
+    \item \texttt{playerOneTurn: boolean} -- Flag indicating whether it's player one's turn (true=red, false=blue)
+\end{itemize}
+
+\subsubsection{Methods}
+
+\begin{itemize}
+    \item \texttt{GameModel(size: int)}
+    \begin{itemize}
+        \item \textbf{Purpose}: Constructor
+        \item \textbf{Description}: Initializes the game model with the specified board size, creates the values and owner arrays, and sets all initial values to 0
+        \item \textbf{Parameters}: size -- The dimension of the board
+        \item \textbf{Returns}: N/A (constructor)
+    \end{itemize}
+    
+    \item \texttt{increment(r: int, c: int): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Core game logic for field increment
+        \item \textbf{Description}: Increments the value of the field at position (r, c) and all its neighbors (up, down, left, right) by 1, if their values are less than 4. If a field reaches 4, it assigns ownership to the current player and increments their score. Neighbors outside the board boundaries are ignored.
+        \item \textbf{Parameters}: r -- Row index; c -- Column index
+        \item \textbf{Returns}: void
+    \end{itemize}
+    
+    \item \texttt{nextPlayer(): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Switch turns
+        \item \textbf{Description}: Toggles the \texttt{playerOneTurn} flag to switch between red and blue players
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: void
+    \end{itemize}
+    
+    \item \texttt{isGameOver(): boolean}
+    \begin{itemize}
+        \item \textbf{Purpose}: Check game end condition
+        \item \textbf{Description}: Checks if all fields on the board have reached the value of 4. Returns true if the game has ended, false otherwise.
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: true if game is over, false otherwise
+    \end{itemize}
+\end{itemize}
+
+\subsection{GameFrame Class}
+
+The \texttt{GameFrame} class extends \texttt{JFrame} and serves as the graphical user interface and controller for the game.
+
+\subsubsection{Fields}
+\begin{itemize}
+    \item \texttt{model: GameModel} -- The game model instance
+    \item \texttt{buttons: JButton[][]} -- 2D array of buttons representing the game board
+    \item \texttt{testMode: boolean} -- Flag to disable popups during testing
+\end{itemize}
+
+\subsubsection{Methods}
+
+\begin{itemize}
+    \item \texttt{GameFrame(size: int)}
+    \begin{itemize}
+        \item \textbf{Purpose}: Constructor
+        \item \textbf{Description}: Creates the game window with a grid layout of buttons. Each button is configured with initial text "0", appropriate size (100x100 pixels), and an action listener. The window is sized to fit the board and centered on screen.
+        \item \textbf{Parameters}: size -- The dimension of the board
+        \item \textbf{Returns}: N/A (constructor)
+    \end{itemize}
+    
+    \item \texttt{handleClick(r: int, c: int): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Event handler for button clicks
+        \item \textbf{Description}: Called when a button is clicked. Calls \texttt{model.increment(r, c)} to update game state, calls \texttt{updateBoard()} to refresh the display, checks if the game is over, and if so, shows the final result and restarts the game. Otherwise, switches to the next player.
+        \item \textbf{Parameters}: r -- Row of clicked button; c -- Column of clicked button
+        \item \textbf{Returns}: void
+    \end{itemize}
+    
+    \item \texttt{updateBoard(): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Refresh the visual display
+        \item \textbf{Description}: Updates all button texts to reflect current field values. If a field has reached 4, its button background is colorized (red or blue) based on ownership.
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: void
+    \end{itemize}
+    
+    \item \texttt{showFinalResult(): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Display game result
+        \item \textbf{Description}: Shows a message dialog with the winner (or "Draw" message) and the final scores of both players. Only called when not in test mode.
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: void
+    \end{itemize}
+    
+    \item \texttt{getWinnerMessage(): String}
+    \begin{itemize}
+        \item \textbf{Purpose}: Determine the winner
+        \item \textbf{Description}: Compares red and blue scores and returns the appropriate winner message ("Red Player Wins!", "Blue Player Wins!", or "It's a Draw!")
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: Winner message string
+    \end{itemize}
+    
+    \item \texttt{restartGame(): void}
+    \begin{itemize}
+        \item \textbf{Purpose}: Restart the game
+        \item \textbf{Description}: Disposes the current game window and calls \texttt{Main.startGame()} to create a new game (unless in test mode)
+        \item \textbf{Parameters}: None
+        \item \textbf{Returns}: void
+    \end{itemize}
+\end{itemize}
+
+\newpage
+
+\section{Events and Event Handlers}
+
+This section describes the connections between user actions (events) and the corresponding event handler methods.
+
+\subsection{Event Flow Diagram}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Event} & \textbf{Event Handler} & \textbf{Description} \\
+\hline
+Application Start & \texttt{Main.main()} & Entry point that initiates the game \\
+\hline
+Game Initialization & \texttt{Main.startGame()} & Displays board size selection dialog and creates GameFrame \\
+\hline
+Board Size Selection & \texttt{Main.startGame()} & User selects board size (3x3, 5x5, or 7x7) from dialog \\
+\hline
+Button Click & \texttt{GameFrame.handleClick(r, c)} & User clicks a field button to make a move \\
+\hline
+Field Increment & \texttt{GameModel.increment(r, c)} & Updates field values and scores based on game rules \\
+\hline
+Display Update & \texttt{GameFrame.updateBoard()} & Refreshes button texts and colors after each move \\
+\hline
+Game Over Check & \texttt{GameModel.isGameOver()} & Checks if all fields have reached value 4 \\
+\hline
+Game End & \texttt{GameFrame.showFinalResult()} & Displays winner message and final scores \\
+\hline
+Game Restart & \texttt{GameFrame.restartGame()} & Closes current game and starts a new one \\
+\hline
+\end{tabularx}
+\caption{Event-Handler Connections}
+\label{tab:events}
+\end{table}
+
+\subsection{Detailed Event Descriptions}
+
+\subsubsection{Button Click Event}
+\begin{itemize}
+    \item \textbf{Trigger}: User clicks on any field button
+    \item \textbf{Event Source}: \texttt{JButton} (from the buttons array)
+    \item \textbf{Event Listener}: \texttt{ActionListener} attached in the \texttt{GameFrame} constructor
+    \item \textbf{Handler Method}: \texttt{handleClick(r, c)}
+    \item \textbf{Actions Performed}:
+    \begin{enumerate}
+        \item Calls \texttt{model.increment(r, c)} to update game state
+        \item Calls \texttt{updateBoard()} to refresh the visual display
+        \item Checks if the game is over using \texttt{model.isGameOver()}
+        \item If game over: shows result and restarts game
+        \item If not over: switches to next player using \texttt{model.nextPlayer()}
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{Window Creation Event}
+\begin{itemize}
+    \item \textbf{Trigger}: \texttt{GameFrame} constructor is called
+    \item \textbf{Event Source}: \texttt{Main.startGame()} method
+    \item \textbf{Handler Method}: \texttt{GameFrame(size)}
+    \item \textbf{Actions Performed}:
+    \begin{enumerate}
+        \item Creates a new \texttt{GameModel} instance
+        \item Sets up the window with GridLayout
+        \item Creates and configures all button instances
+        \item Attaches ActionListeners to buttons
+        \item Makes the window visible
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{Dialog Events}
+\begin{itemize}
+    \item \textbf{Board Size Selection Dialog}:
+    \begin{itemize}
+        \item \textbf{Trigger}: \texttt{Main.startGame()} is called
+        \item \textbf{Event Source}: \texttt{JOptionPane.showInputDialog()}
+        \item \textbf{Handler}: Switch statement in \texttt{startGame()}
+        \item \textbf{Action}: Determines board size based on user selection
+    \end{itemize}
+    
+    \item \textbf{Game Over Message Dialog}:
+    \begin{itemize}
+        \item \textbf{Trigger}: All fields reach value 4
+        \item \textbf{Event Source}: \texttt{showFinalResult()} method
+        \item \textbf{Handler}: \texttt{JOptionPane.showMessageDialog()}
+        \item \textbf{Action}: Displays winner and final scores
+    \end{itemize}
+\end{itemize}
+
+\subsection{Event Sequence Flow}
+
+The typical sequence of events during a game session:
+
+\begin{enumerate}
+    \item \textbf{Startup}: \texttt{main()} $\rightarrow$ \texttt{startGame()} $\rightarrow$ Board size dialog
+    \item \textbf{Initialization}: \texttt{GameFrame} constructor $\rightarrow$ \texttt{GameModel} constructor
+    \item \textbf{Gameplay Loop} (repeated):
+    \begin{itemize}
+        \item User clicks button
+        \item \texttt{handleClick()} called
+        \item \texttt{model.increment()} updates state
+        \item \texttt{updateBoard()} refreshes display
+        \item \texttt{model.nextPlayer()} switches turns
+    \end{itemize}
+    \item \textbf{Game End}:
+    \begin{itemize}
+        \item \texttt{isGameOver()} returns true
+        \item \texttt{showFinalResult()} displays message
+        \item \texttt{restartGame()} initiates new game
+    \end{itemize}
+    \item \textbf{Restart}: Returns to step 1 (board size selection)
+\end{enumerate}
+
+\newpage
+
+\section{Implementation Details}
+
+\subsection{Object-Oriented Design}
+
+The application demonstrates several OOP principles:
+
+\begin{itemize}
+    \item \textbf{Encapsulation}: The \texttt{GameModel} class encapsulates all game logic and state with private fields and public methods (getters/setters)
+    \item \textbf{Separation of Concerns}: Clear separation between model (GameModel), view (GameFrame), and controller (event handlers)
+    \item \textbf{Abstraction}: Game logic is abstracted away from UI concerns
+    \item \textbf{Inheritance}: \texttt{GameFrame} extends \texttt{JFrame} to leverage Swing functionality
+\end{itemize}
+
+\subsection{User Interface}
+
+\begin{itemize}
+    \item \textbf{Board Size Adaptation}: The window automatically resizes to fit boards of different sizes (3x3, 5x5, 7x7)
+    \item \textbf{Visual Feedback}: 
+    \begin{itemize}
+        \item Button text shows current field values (0-4)
+        \item Background color indicates field ownership (red/blue)
+        \item Large, readable font (Arial Bold, 24pt)
+    \end{itemize}
+    \item \textbf{User-Friendly Features}:
+    \begin{itemize}
+        \item Clear board size selection dialog
+        \item Centered window positioning
+        \item Informative end-game messages
+        \item Automatic game restart
+    \end{itemize}
+\end{itemize}
+
+\subsection{Testing Support}
+
+The implementation includes testing features:
+\begin{itemize}
+    \item \texttt{testMode} flag to disable popups during automated tests
+    \item \texttt{testBoardSize} to force specific board sizes in tests
+    \item \texttt{TestGameFrame} subclass to override restart behavior in tests
+    \item Public getter methods for test verification
+\end{itemize}
+
+\section{Conclusion}
+
+The Four Game successfully implements all required features:
+\begin{itemize}
+    \item Two-player gameplay with turn-based mechanics
+    \item Increment logic affecting neighbors
+    \item Scoring system based on reaching value 4
+    \item Visual distinction between players (color coding)
+    \item Multiple board sizes (3x3, 5x5, 7x7)
+    \item Automatic game-over detection
+    \item Winner announcement via message box
+    \item Automatic game restart
+    \item User-friendly interface with adaptive window sizing
+\end{itemize}
+
+The application demonstrates proper object-oriented design with clear class responsibilities, encapsulation, and separation of concerns between the model, view, and control logic.
+
+\end{document}

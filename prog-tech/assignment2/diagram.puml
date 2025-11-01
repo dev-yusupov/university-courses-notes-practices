@@ -1,0 +1,41 @@
+@startuml
+
+title Four Game - Simplified UML (No Getters/Setters)
+
+class Main {
+    + main(args: String[]): void
+    + startGame(): void
+}
+
+class GameFrame {
+    - model: GameModel
+    - buttons: JButton[][]
+    - size: int
+
+    + GameFrame(size: int)
+    + handleClick(r:int, c:int): void
+    + updateBoard(): void
+    + showFinalResult(): void
+    + restartGame(): void
+}
+
+class GameModel {
+    - size: int
+    - values: int[][]
+    - owner: int[][]
+    - redScore: int
+    - blueScore: int
+    - playerOneTurn: boolean
+
+    + GameModel(size: int)
+    + increment(r:int, c:int): void
+    + nextPlayer(): void
+    + isGameOver(): boolean
+}
+
+Main --> GameFrame : creates
+GameFrame --> GameModel : uses
+GameFrame --> JButton : grid of
+JButton --> GameModel : click updates
+
+@enduml

@@ -25,7 +25,7 @@ public class MainTest {
 
         JFrame active = getActiveFrame();
         Assert.assertNotNull(active);
-        Assert.assertEquals(3, ((GameFrame) active).getModel().size);
+        Assert.assertEquals(3, ((GameFrame) active).getModel().getSize());
 
         active.dispose();
     }
@@ -38,7 +38,7 @@ public class MainTest {
 
         JFrame active = getActiveFrame();
         Assert.assertNotNull(active);
-        Assert.assertEquals(7, ((GameFrame) active).getModel().size);
+        Assert.assertEquals(7, ((GameFrame) active).getModel().getSize());
 
         active.dispose();
     }
