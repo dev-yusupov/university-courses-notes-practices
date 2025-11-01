@@ -6,12 +6,20 @@ public class GameModel {
     public int[][] owner;
     public int redScore = 0;
     public int blueScore = 0;
-    public boolean playerOneTurn = true;
+    private boolean playerOneTurn = true;
     
     public GameModel(int size) {
         this.size = size;
         values = new int[size][size];
         owner = new int[size][size];
+    }
+    
+    public boolean getPlayerOneTurn() {
+        return playerOneTurn;
+    }
+    
+    public void setPlayerOneTurn(boolean val) {
+        playerOneTurn = val;
     }
     
     public void increment(int r, int c) {
@@ -24,7 +32,7 @@ public class GameModel {
             if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
                 if (values[nr][nc] < 4) {
                     values[nr][nc]++;
-                    if (values[nr][nc] == 4) {
+                    if (values[nr][nc] == 4 && nr == r && nc == c) {
                         if (playerOneTurn) redScore++;
                         else blueScore++;
 

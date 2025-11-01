@@ -6,6 +6,7 @@ import java.awt.*;
 public class GameFrame extends JFrame {
     private final GameModel model;
     private final JButton[][] buttons;
+    protected boolean testMode = false;
 
     public GameFrame(int size) {
         this.model = new GameModel(size);
@@ -33,16 +34,17 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
 
+    public GameModel getModel() {
+        return this.model;
+    }
+    
     private void handleClick(int r, int c) {
         model.increment(r, c);
         updateBoard();
 
         if (model.isGameOver()) {
-            showFinalResult();
+            if (!testMode) showFinalResult();
             restartGame();
-
-            dispose();
-            Main.startGame();
         } else {
             model.nextPlayer();
         }
@@ -73,8 +75,10 @@ public class GameFrame extends JFrame {
         }
     }
     
-    private void restartGame() {
+    protected void restartGame() {
         dispose();
-        Main.startGame();
+        if (!testMode) {
+            Main.startGame();
+        }
     }
 }
