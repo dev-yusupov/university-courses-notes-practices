@@ -38,20 +38,28 @@ public class GameFrame extends JFrame {
         updateBoard();
 
         if (model.isGameOver()) {
-            String winner = model.redScore > model.blueScore ?
-                    "Red Player Wins!" :
-                    model.redScore < model.blueScore ?
-                            "Blue Player Wins!" :
-                            "It's a Draw!";
-
-            JOptionPane.showMessageDialog(this,
-                    winner + "\nFinal Score:\nRed: " + model.redScore + "\nBlue: " + model.blueScore);
+            showFinalResult();
+            restartGame();
 
             dispose();
             Main.startGame();
         } else {
             model.nextPlayer();
         }
+    }
+    
+    private void showFinalResult() {
+        String winnerMessage = getWinnerMessage();
+        
+        JOptionPane.showMessageDialog(this,
+                    winnerMessage + 
+                            "\nFinal Score:\nRed: " + model.redScore + "\nBlue: " + model.blueScore);
+    }
+    
+    private String getWinnerMessage() {
+        if (model.redScore > model.blueScore) return "Red Player Wins!";
+        if (model.blueScore > model.redScore) return "Blue Player Wins!";
+        return "It's a Draw!";
     }
 
     private void updateBoard() {
@@ -63,5 +71,10 @@ public class GameFrame extends JFrame {
                 }
             }
         }
+    }
+    
+    private void restartGame() {
+        dispose();
+        Main.startGame();
     }
 }
