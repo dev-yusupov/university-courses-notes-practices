@@ -215,6 +215,214 @@ The \texttt{GameFrame} class extends \texttt{JFrame} and serves as the graphical
 
 \newpage
 
+\section{Test Cases}
+
+This section describes all the test cases implemented to verify the correctness of the game implementation. The tests are organized by the class being tested.
+
+\subsection{GameModel Tests (GameModelTest.java)}
+
+\begin{enumerate}
+    \item \textbf{testInitialState}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify that the game model initializes correctly
+        \item \textbf{Test}: Creates a 3x3 board and checks initial state
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Board size is 3
+            \item Game is not over
+            \item Both scores are 0
+            \item Player one's turn is true
+            \item All field values are 0
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testIncrementCenterAffectsNeighbors}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify that incrementing a center field affects all neighbors
+        \item \textbf{Test}: Clicks the center field (1,1) on a 3x3 board
+        \item \textbf{Expected Result}: The center field and all 4 neighbors (up, down, left, right) are incremented to 1
+    \end{itemize}
+    
+    \item \textbf{testIncrementEdgeAffectsValidCellsOnly}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify that edge fields only affect valid neighbors
+        \item \textbf{Test}: Clicks the top-left corner (0,0)
+        \item \textbf{Expected Result}: Only the corner field and its 2 valid neighbors are incremented; opposite corner remains 0
+    \end{itemize}
+    
+    \item \textbf{testScoreIncreasesWhenValueReaches4ForRed}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify red player score increases when reaching 4
+        \item \textbf{Test}: Clicks center field 4 times during red player's turn
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Center field value is 4
+            \item Red score is 1
+            \item Blue score is 0
+            \item Field owner is 1 (red)
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testScoreIncreasesWhenValueReaches4ForBlue}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify blue player score increases when reaching 4
+        \item \textbf{Test}: Sets player turn to blue, then clicks center field 4 times
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Center field value is 4
+            \item Red score is 0
+            \item Blue score is 1
+            \item Field owner is 2 (blue)
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testNextPlayerSwitchesTurn}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify player turn switching works correctly
+        \item \textbf{Test}: Calls nextPlayer() multiple times
+        \item \textbf{Expected Result}: Turn alternates between player one (true) and player two (false)
+    \end{itemize}
+    
+    \item \textbf{testGameNotOverInitially}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify game is not over at start
+        \item \textbf{Test}: Creates a new game
+        \item \textbf{Expected Result}: isGameOver() returns false
+    \end{itemize}
+    
+    \item \textbf{testGameOverWhenAllAre4}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify game over detection when all fields reach 4
+        \item \textbf{Test}: Increments all fields on a 2x2 board to 4
+        \item \textbf{Expected Result}: isGameOver() returns true
+    \end{itemize}
+    
+    \item \textbf{testIncrementDoesNotIncreaseBeyond4}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify fields cannot exceed value of 4
+        \item \textbf{Test}: Clicks center field 10 times
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Field value remains at 4
+            \item Red score is 1 (only counted once)
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testGameEndsTriggersRestart}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify restart is triggered when game ends
+        \item \textbf{Test}: Manually sets all fields to 4 and clicks a button
+        \item \textbf{Expected Result}: restartCalled flag is set to true
+    \end{itemize}
+\end{enumerate}
+
+\subsection{GameFrame Tests (GameFrameTest.java)}
+
+\begin{enumerate}
+    \item \textbf{testFrameCreated}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify the game window is created correctly
+        \item \textbf{Test}: Creates a TestGameFrame
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Frame is not null
+            \item Title is "Four Game"
+            \item Frame is displayable
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testGridButtonsExist}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify correct number of buttons are created
+        \item \textbf{Test}: Creates a 3x3 game frame
+        \item \textbf{Expected Result}: Content pane contains 9 components (3x3 grid)
+    \end{itemize}
+    
+    \item \textbf{testButtonClickUpdatesValue}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify button clicks update the display
+        \item \textbf{Test}: Clicks the center button once
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Initial text is "0"
+            \item After click, text is "1"
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testMultipleClicksReach4}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify multiple clicks reach value of 4
+        \item \textbf{Test}: Clicks center button 4 times
+        \item \textbf{Expected Result}: Button text displays "4"
+    \end{itemize}
+    
+    \item \textbf{testGameEndsTriggersRestart}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify restart is triggered when game ends
+        \item \textbf{Test}: Fills entire board to 4 and clicks a button
+        \item \textbf{Expected Result}: restartCalled flag is set to true
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Main Tests (MainTest.java)}
+
+\begin{enumerate}
+    \item \textbf{testStartGameWith3x3}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify 3x3 board creation works
+        \item \textbf{Test}: Sets testBoardSize to 3 and calls startGame()
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Active frame is not null
+            \item Game model size is 3
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{testStartGameWith7x7}
+    \begin{itemize}
+        \item \textbf{Purpose}: Verify 7x7 board creation works
+        \item \textbf{Test}: Sets testBoardSize to 7 and calls startGame()
+        \item \textbf{Expected Result}: 
+        \begin{itemize}
+            \item Active frame is not null
+            \item Game model size is 7
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Test Summary}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Test Class} & \textbf{Number of Tests} \\
+\hline
+GameModelTest & 10 \\
+\hline
+GameFrameTest & 5 \\
+\hline
+MainTest & 2 \\
+\hline
+\textbf{Total} & \textbf{17} \\
+\hline
+\end{tabular}
+\caption{Test Coverage Summary}
+\end{table}
+
+All tests verify critical functionality including:
+\begin{itemize}
+    \item Correct initialization
+    \item Game logic (increment, scoring, ownership)
+    \item Player turn switching
+    \item Game over detection
+    \item UI creation and interaction
+    \item Board size selection
+    \item Edge cases (corner clicks, values exceeding 4)
+\end{itemize}
+
+\newpage
+
 \section{Events and Event Handlers}
 
 This section describes the connections between user actions (events) and the corresponding event handler methods.
