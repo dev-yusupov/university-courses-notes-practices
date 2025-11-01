@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package fourgame;
 
 /**
@@ -9,6 +5,7 @@ package fourgame;
  * This class overrides the restartGame() method to simply set a flag and dispose
  * the frame without creating a new game instance.
  */
+
 public class TestGameFrame extends GameFrame {
     boolean restartCalled = false;
 
