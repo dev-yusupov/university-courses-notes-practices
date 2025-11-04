@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budapest Metro Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Menu Screen -->
+    <div id="menu-screen" class="screen active">
+        <div class="menu-container">
+            <h1>Budapest Metro Builder 💙</h1>
+            <p class="subtitle">Plan the metro network of Budapest!</p>
+            
+            <div class="menu-form">
+                <label for="player-name">Your Name:</label>
+                <input type="text" id="player-name" placeholder="Enter your name" required>
+                
+                <button id="start-button" class="btn btn-primary">Start Game</button>
+                <button id="rules-button" class="btn btn-secondary">Game Rules</button>
+                <button id="scores-button" class="btn btn-secondary">View Scores</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rules Screen -->
+    <div id="rules-screen" class="screen">
+        <div class="rules-container">
+            <h2>Game Rules</h2>
+            <div class="rules-content">
+                <h3>Objective</h3>
+                <p>Build Budapest's metro network to earn the most points across 4 rounds.</p>
+                
+                <h3>How to Play</h3>
+                <ul>
+                    <li><strong>4 Rounds:</strong> Build one metro line per round (M1/Yellow, M2/Red, M3/Blue, M4/Green) in random order.</li>
+                    <li><strong>Draw Cards:</strong> Each turn, draw a station card (A, B, C, D, or Joker).</li>
+                    <li><strong>Build Segments:</strong> Click on a station to extend your metro line from an endpoint.</li>
+                    <li><strong>Rules:</strong>
+                        <ul>
+                            <li>Segments must be straight (horizontal, vertical, or diagonal at 45°)</li>
+                            <li>Must match the card type or connect to Deák tér (Joker station)</li>
+                            <li>Cannot cross other segments or pass through stations</li>
+                            <li>Cannot revisit stations on the same line</li>
+                        </ul>
+                    </li>
+                    <li><strong>Round Ends:</strong> After drawing 8 cards.</li>
+                    <li><strong>Scoring:</strong> Points for districts covered, Danube crossings, railway stations, and junctions.</li>
+                </ul>
+                
+                <h3>Controls</h3>
+                <p><strong>Drawing Segments:</strong> Click on a target station after drawing a card to extend your metro line.</p>
+                <p><strong>Skip:</strong> Click "Draw Next Card" to skip building a segment.</p>
+            </div>
+            <button id="back-to-menu" class="btn btn-primary">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Scores Screen -->
+    <div id="scores-screen" class="screen">
+        <div class="scores-container">
+            <h2>High Scores</h2>
+            <div id="scores-list" class="scores-list">
+                <p class="no-scores">No games played yet!</p>
+            </div>
+            <button id="back-to-menu-scores" class="btn btn-primary">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-container">
+            <!-- Game Header -->
+            <div class="game-header">
+                <div class="player-info">
+                    <span class="label">Player:</span>
+                    <span id="player-name-display">-</span>
+                </div>
+                <div class="timer-info">
+                    <span class="label">Time:</span>
+                    <span id="timer-display">00:00</span>
+                </div>
+                <div class="round-info">
+                    <span class="label">Current Line:</span>
+                    <span id="current-line-display">-</span>
+                </div>
+            </div>
+
+            <!-- Round Order Display -->
+            <div class="round-order">
+                <div class="label">Round Order:</div>
+                <div id="round-order-display" class="round-order-items"></div>
+            </div>
+
+            <!-- Main Game Area -->
+            <div class="game-main">
+                <!-- Left Panel: Board -->
+                <div class="board-container">
+                    <div id="game-board" class="game-board"></div>
+                </div>
+
+                <!-- Right Panel: Cards and Info -->
+                <div class="info-panel">
+                    <!-- Current Card -->
+                    <div class="card-section">
+                        <h3>Current Card</h3>
+                        <div id="current-card-display" class="card-display">
+                            <div class="card-placeholder">Draw a card to start</div>
+                        </div>
+                        <div class="card-controls">
+                            <button id="draw-card-button" class="btn btn-primary">Draw Next Card</button>
+                        </div>
+                        <div class="card-count">
+                            <span>Cards: <span id="cards-drawn-count">0</span>/8 | Side: <span id="side-count">0</span> | Center: <span id="center-count">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Abilities Section -->
+                    <div class="abilities-section" id="abilities-section" style="display: none;">
+                        <h3>Special Ability</h3>
+                        <div id="ability-info" class="ability-info"></div>
+                        <div class="ability-controls">
+                            <button id="use-ability-button" class="btn btn-secondary" style="display: none;">Use Ability</button>
+                        </div>
+                    </div>
+
+                    <!-- Railway Stations Track -->
+                    <div class="railway-section">
+                        <h3>Railway Stations</h3>
+                        <div class="railway-track">
+                            <div class="railway-points" id="railway-points">
+                                <span class="railway-point" data-value="0">0</span>
+                                <span class="railway-point" data-value="1">1</span>
+                                <span class="railway-point" data-value="2">2</span>
+                                <span class="railway-point" data-value="4">4</span>
+                                <span class="railway-point" data-value="6">6</span>
+                                <span class="railway-point" data-value="8">8</span>
+                                <span class="railway-point" data-value="11">11</span>
+                                <span class="railway-point" data-value="14">14</span>
+                                <span class="railway-point" data-value="17">17</span>
+                                <span class="railway-point" data-value="21">21</span>
+                                <span class="railway-point" data-value="25">25</span>
+                            </div>
+                        </div>
+                        <div class="railway-count">Connected: <span id="railway-count">0</span></div>
+                    </div>
+
+                    <!-- Scoring -->
+                    <div class="scoring-section">
+                        <h3>Current Round Score</h3>
+                        <div class="score-item">
+                            <span class="score-label">Districts (PK):</span>
+                            <span id="score-pk">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Max in District (PM):</span>
+                            <span id="score-pm">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Danube Crossings (PD):</span>
+                            <span id="score-pd">0</span>
+                        </div>
+                        <div class="score-item score-total">
+                            <span class="score-label">Round Score (FP):</span>
+                            <span id="score-fp">0</span>
+                        </div>
+                        
+                        <h3 class="mt-2">Total Score</h3>
+                        <div class="score-item">
+                            <span class="score-label">All Rounds:</span>
+                            <span id="score-rounds-total">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Railway (PP):</span>
+                            <span id="score-railway">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Junctions:</span>
+                            <span id="score-junctions">0</span>
+                        </div>
+                        <div class="score-item score-final">
+                            <span class="score-label">FINAL SCORE:</span>
+                            <span id="score-final">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="screen">
+        <div class="game-over-container">
+            <h1>Game Complete!</h1>
+            <div class="final-stats">
+                <p>Congratulations, <span id="final-player-name">-</span>!</p>
+                <p class="final-score">Final Score: <span id="final-score-display">0</span></p>
+                <p class="final-time">Time: <span id="final-time-display">00:00</span></p>
+            </div>
+            <button id="back-to-menu-final" class="btn btn-primary">Back to Menu</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
