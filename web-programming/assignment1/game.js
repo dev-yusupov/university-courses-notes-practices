@@ -255,9 +255,10 @@ function renderBoard() {
                 stationEl.dataset.stationId = station.id;
                 
                 // Check if it's a starting station
-                const isStart = gameState.lines.some(line => line.start === station.id);
-                if (isStart) {
+                const startLine = gameState.lines.find(line => line.start === station.id);
+                if (startLine) {
                     stationEl.classList.add('start');
+                    stationEl.classList.add(`start-${startLine.name}`);
                 }
                 
                 // Add train icon if applicable

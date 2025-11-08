@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Menu Screen -->
     <div id="menu-screen" class="screen active">
         <div class="menu-container">
-            <h1>Budapest Metro Builder 💙</h1>
+            <h1>Budapest Metro Builder</h1>
             <p class="subtitle">Plan the metro network of Budapest!</p>
             
             <div class="menu-form">
@@ -24,7 +23,6 @@
         </div>
     </div>
 
-    <!-- Rules Screen -->
     <div id="rules-screen" class="screen">
         <div class="rules-container">
             <h2>Game Rules</h2>
@@ -57,7 +55,6 @@
         </div>
     </div>
 
-    <!-- Scores Screen -->
     <div id="scores-screen" class="screen">
         <div class="scores-container">
             <h2>High Scores</h2>
@@ -68,10 +65,8 @@
         </div>
     </div>
 
-    <!-- Game Screen -->
     <div id="game-screen" class="screen">
         <div class="game-container">
-            <!-- Game Header -->
             <div class="game-header">
                 <div class="player-info">
                     <span class="label">Player:</span>
@@ -87,22 +82,17 @@
                 </div>
             </div>
 
-            <!-- Round Order Display -->
             <div class="round-order">
                 <div class="label">Round Order:</div>
                 <div id="round-order-display" class="round-order-items"></div>
             </div>
 
-            <!-- Main Game Area -->
             <div class="game-main">
-                <!-- Left Panel: Board -->
                 <div class="board-container">
                     <div id="game-board" class="game-board"></div>
                 </div>
 
-                <!-- Right Panel: Cards and Info -->
                 <div class="info-panel">
-                    <!-- Current Card -->
                     <div class="card-section">
                         <h3>Current Card</h3>
                         <div id="current-card-display" class="card-display">
@@ -113,6 +103,13 @@
                         </div>
                         <div class="card-count">
                             <span>Cards: <span id="cards-drawn-count">0</span>/8 | Side: <span id="side-count">0</span> | Center: <span id="center-count">0</span></span>
+                        </div>
+                        <div class="game-help">
+                            <strong>How to play:</strong><br>
+                            • Click on a station to build a segment<br>
+                            • Match card type (A, B, C, D) or use Joker<br>
+                            • Build from endpoints (or any station with Switch)<br>
+                            • Lines must be straight (horizontal, vertical, or diagonal)
                         </div>
                     </div>
 
@@ -125,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Railway Stations Track -->
                     <div class="railway-section">
                         <h3>Railway Stations</h3>
                         <div class="railway-track">
@@ -146,7 +142,6 @@
                         <div class="railway-count">Connected: <span id="railway-count">0</span></div>
                     </div>
 
-                    <!-- Scoring -->
                     <div class="scoring-section">
                         <h3>Current Round Score</h3>
                         <div class="score-item">
@@ -189,7 +184,6 @@
         </div>
     </div>
 
-    <!-- Game Over Screen -->
     <div id="game-over-screen" class="screen">
         <div class="game-over-container">
             <h1>Game Complete!</h1>
