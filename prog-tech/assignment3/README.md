@@ -24,7 +24,11 @@ This assignment focuses on collecting data from the internet and using it to cre
 
 2. **requirements.txt** - Python dependencies needed to run the project
 
-3. **Generated Files** (created when running the notebook):
+3. **test_scraper.py** - Test script to verify the scraper works correctly
+
+4. **generate_sample_data.py** - Creates sample data for testing the analysis features
+
+5. **Generated Files** (created when running the notebook):
    - `springer_journal_articles.csv` - Raw collected data
    - `springer_journal_articles_cleaned.csv` - Processed data
    - `springer_journal_articles.xlsx` - Excel format (optional)
@@ -70,10 +74,32 @@ jupyter notebook springer_journal_scraper.ipynb
 
 ## Usage
 
+### Running with Live Data (Requires Internet Access)
+
 The notebook is fully commented and can be run cell by cell. Each section includes:
 - Clear explanations of what the code does
 - Purpose and context for each step
 - Visualizations to illustrate findings
+
+Simply run all cells in order to scrape live data from the Springer journal website.
+
+### Testing with Sample Data (No Internet Required)
+
+If you don't have internet access or want to test the analysis features first:
+
+1. Generate sample data:
+```bash
+python generate_sample_data.py
+```
+
+2. Modify the notebook to load the sample data instead of scraping:
+   - Skip the scraping cells (Section 3)
+   - In Section 4, load the sample data:
+   ```python
+   df = pd.read_csv('springer_journal_articles_sample.csv')
+   ```
+
+3. Continue with the rest of the analysis and visualization sections
 
 ## Technical Details
 
