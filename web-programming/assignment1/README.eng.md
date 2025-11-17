@@ -45,7 +45,7 @@ Mark all completed tasks with [X] symbol. Reminder: all minimum requirements MUS
 - **Rounds (1.5 points)**
   - [X] 0.5 points: The order of rounds (colors/metro lines) is pre-generated and displayed (we can see the current round).
   - [X] 1.0 point: After the 8th card is drawn, the round ends and a new line/color begins.
-    - [ ] _Or for 0.5 partial points: A button allows manual transition to the next round at any time (starts new metro line/color)._
+  - [X] _Or for 0.5 partial points: A button allows manual transition to the next round at any time (starts new metro line/color)._
 - **Scoring (3.5 points)**
   - Round scoring works
     - [X] 0.5 points: Number of districts covered (PK)
@@ -63,4 +63,4 @@ Mark all completed tasks with [X] symbol. Reminder: all minimum requirements MUS
 - [X] 0.5 points: Alternative round-ending condition: There are two types of station cards (side platform and central platform). If the fifth card of either type is drawn, no more cards can be drawn — instead, a "End Round" button must be pressed.
 - [X] 1.0 point: At the end of the game, the player's name, score, and completion time are saved (in local storage), and results can be viewed in the menu in descending order of score.
 - [X] 1.5 points: The switch card functions properly.
-- [X] 2.0 points: Pencil abilities (see Gameplay > Extra task: New Game Mode.
+- [X] 2.0 points: Pencil abilities (see Gameplay > Extra task: New Game Mode).

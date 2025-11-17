@@ -485,12 +485,12 @@ body {
 .station.type-B { background: #000; color: #fff; border: 4px solid #fff; }
 .station.type-C { background: #000; color: #fff; border: 4px solid #fff; }
 .station.type-D { background: #000; color: #fff; border: 4px solid #fff; }
-.station.type-joker { 
-    background: #000;
+.station.type-\? { 
+    background: linear-gradient(135deg, #ff8a80 0%, #69f0ae 33%, #448aff 66%, #ffd740 100%);
     font-size: 1.7em;
-    color: #fff;
+    color: #000;
     border: 4px solid #fff;
-    text-shadow: none;
+    text-shadow: 0 0 2px #fff;
 }
 
 .station.start {
@@ -500,7 +500,7 @@ body {
 }
 
 .station.start-M1 {
-    background: #FFD700 !important;
+    background: #FFD800 !important;
     color: #000 !important;
     border-color: #fff;
 }
@@ -585,7 +585,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.segment.line-M1 { background: #FFD700; }
+.segment.line-M1 { background: #FFD800; }
 .segment.line-M2 { background: #E41F18; }
 .segment.line-M3 { background: #005CA5; }
 .segment.line-M4 { background: #4CA22F; }
@@ -832,7 +832,7 @@ body {
     margin-top: 20px;
 }
 
-.line-M1 { background-color: #FFD700; }
+.line-M1 { background-color: #FFD800; }
 .line-M2 { background-color: #E41F18; }
 .line-M3 { background-color: #005CA5; }
 .line-M4 { background-color: #4CA22F; }
