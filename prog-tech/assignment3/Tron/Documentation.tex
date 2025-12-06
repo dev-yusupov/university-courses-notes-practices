@@ -113,17 +113,6 @@ The application relies on the Swing Event Dispatch Thread (EDT) for handling use
     \label{fig:class-diagram}
 \end{figure}
 
-\subsection{Class Overview}
-
-The application follows the Model-View-Controller (MVC) architectural pattern:
-
-\begin{itemize}
-    \item \textbf{View (GUI)}: Classes in the `tron.gui` package (MainFrame, MenuPanel, GamePanel, HighScorePanel).
-    \item \textbf{Model (Logic)}: Classes in the `tron.logic` package (GameModel, Motor, LevelGenerator, Position, Direction).
-    \item \textbf{Data (DB)}: Classes in the `tron.db` package (Database, PlayerScore).
-    \item \textbf{Controller}: Event handling is managed within the View classes (ActionListeners) delegating to the Model.
-\end{itemize}
-
 \newpage
 
 \section{Class and Method Descriptions}
