@@ -25,7 +25,7 @@
     stringstyle=\color{red}
 }
 
-\title{\textbf{Tron Game}}
+\title{\textbf{Tron Game Specification and Documentation}}
 \author{Yusupov Boburjon\\Neptun: YTAJDI}
 \date{\today}
 
@@ -37,31 +37,78 @@
 
 \section{Description of the Exercise}
 
-Implement a Tron-like game where two players control light cycles (motors) on a 2D grid. The game is played
-on a 60x40 grid. Player 1 (Red) starts on the left side moving right, and Player 2 (Blue) starts on the 
-right side moving left. As players move, they leave a trail behind them. If a player collides with a wall, 
-an obstacle, or any existing trail (including their own), they crash and the other player wins. If both 
-players crash simultaneously, it is a draw.
+Create a game, with we can play the light-motorcycle battle (known from the Tron movie) in a top view. Two players play against each other with two motors, where each motor leaves a light trace behind of itself on the display. The motor goes in each seconds toward the direction, that the player has set recently. The first player can use the WASD keyboard buttons, while the second one can use the cursor buttons for steering. A player loses if its motor goes to the boundary of the game level, or it goes to the light trace of the other player. Ask the name of the players before the game starts, and let them choose the color their light traces. Increase the counter of the winner by one in the database at the end of the game. If the player does not exit in the database yet, then insert a record for him. Create a menu item, which displays a highscore table of the players for the 10 best scores. Also, create a menu item which restarts the game.
 
-The game must include dynamic obstacles generated for each level. The number of obstacles increases with 
-the level difficulty. The game must also track player scores (number of wins) and store them in a persistent 
-database (PostgreSQL). The application should provide a main menu to enter player names, choose colors, 
-start the game, and view high scores.
+\section{Analysis}
+
+The problem requires creating a graphical application that simulates a simplified version of the Tron light cycle game. The core requirements involve real-time movement, collision detection, and persistent data storage.
+
+\subsection{Key Components}
+\begin{itemize}
+    \item \textbf{Game Loop}: A mechanisms to update the game state at fixed intervals (timer).
+    \item \textbf{Collision Detection}: Logic to determine if a player's position overlaps with walls, obstacles, or trails.
+    \item \textbf{Input Handling}: distinct controls for two players sharing the same keyboard.
+    \item \textbf{Data Persistence}: A database connection to store cumulative scores across sessions.
+    \item \textbf{Level Generation}: An Algorithm to create distinct playable environments.
+\end{itemize}
+
+\section{Implementation}
+
+\subsection{Level Generation Algorithm}
+The level generation is handled by the \texttt{LevelGenerator} class. Instead of static files, we use a procedural approach to ensure infinite replayability.
+
+\begin{description}
+    \item[Algorithm Strategy:]
+    \begin{enumerate}
+        \item The number of obstacles is determined by the formula: $count = levelIndex \times 5$.
+        \item Random $(x, y)$ coordinates are generated within the grid bounds.
+        \item \textbf{Safety Zones:} To ensure the game is playable, we define "safety zones" around the starting positions of Player 1 (top-left) and Player 2 (bottom-right).
+        \item If a generated coordinate falls inside a safety zone, it is discarded, and a new one is picked.
+        \item Valid coordinates are added to the list of obstacles.
+    \end{enumerate}
+\end{description}
+
+\subsection{Game Loop and Timing}
+The game uses a \texttt{javax.swing.Timer} set to trigger every 100ms. On each tick:
+\begin{enumerate}
+    \item The model updates player positions based on their current direction.
+    \item Collision checks are performed.
+    \item The view (JPanel) is repainted to reflect the new state.
+\end{enumerate}
+
+\section{Events and Event Handlers}
+
+The application relies on the Swing Event Dispatch Thread (EDT) for handling user interactions and timer updates.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Event Source} & \textbf{Event Type} & \textbf{Handler Action} \\
+\hline
+\texttt{Timer} (GamePanel) & \texttt{ActionEvent} & Calls \texttt{gameModel.update()} to advance game state and \texttt{repaint()} to update graphics. \\
+\hline
+\texttt{Keyboard} (GamePanel) & \texttt{KeyEvent} & Updates \texttt{Motor} direction:
+\begin{itemize}
+    \item WASD $\rightarrow$ Player 1 Direction
+    \item Arrows $\rightarrow$ Player 2 Direction
+    \item ESC $\rightarrow$ Return to Menu
+\end{itemize} \\
+\hline
+\texttt{Start Button} (Menu) & \texttt{ActionEvent} & Validates names/colors and triggers \texttt{mainFrame.startGame()}. \\
+\hline
+\texttt{HighScores Button} & \texttt{ActionEvent} & Switches CardLayout to HighScore view and queries Database. \\
+\hline
+\end{tabularx}
+\caption{Event Handling Mapping}
+\end{table}
 
 \newpage
 
 \section{Class Diagram}
 \begin{figure}[H]
     \centering
-    % Placeholder for where the image would be if generated
-    \fbox{\begin{minipage}{0.8\textwidth}
-        \centering
-        \vspace{2cm}
-        [Include "diagram.png" here showing relationships between: \\
-        Main, MainFrame, MenuPanel, GamePanel, HighScorePanel, \\
-        GameModel, Motor, LevelGenerator, Database, Position, Direction]
-        \vspace{2cm}
-    \end{minipage}}
+    \includegraphics[width=1.0\textwidth]{diagram.png}
     \caption{Class Diagram of the Tron Application}
     \label{fig:class-diagram}
 \end{figure}
