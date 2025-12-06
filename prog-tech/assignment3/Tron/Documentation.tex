@@ -182,67 +182,50 @@ Renders the game loop.
 
 \newpage
 
-\section{Test Cases}
+\section{Test Plan}
 
-Unit tests are implemented using JUnit 4.
-
-\subsection{Logic Layer Tests}
-
-\subsubsection{GameModelTest}
-\begin{itemize}
-    \item \textbf{testInitialization}: Verifies players start at correct positions.
-    \item \textbf{testUpdateMovesPlayers}: checks that `update()` advances player coordinates.
-    \item \textbf{testWallCollision}: Simulates a player hitting the wall and verifies game over state and winner designation.
-    \item \textbf{testHeadOnCollision}: Simulates players crashing into each other, resulting in a draw.
-\end{itemize}
-
-\subsubsection{MotorTest}
-\begin{itemize}
-    \item \textbf{testInitialization}: Checks initial state of a motor.
-    \item \textbf{testMove}: Verifies movement logic and trail growth.
-    \item \textbf{testDirectionChange}: checks valid 90-degree turns.
-    \item \textbf{testInvalidDirectionChange}: checks that 180-degree turns are ignored.
-\end{itemize}
-
-\subsubsection{LevelGeneratorTest}
-\begin{itemize}
-    \item \textbf{testGenerateLevelCount}: Verifies that the number of obstacles scales with level index.
-    \item \textbf{testSafetyZones}: Ensures no obstacles are generated in the corners where players spawn.
-\end{itemize}
-
-\subsubsection{DirectionTest}
-\begin{itemize}
-    \item \textbf{testEnumValues}: Basic verification of Direction enum constants.
-\end{itemize}
-
-\subsubsection{PositionTest}
-\begin{itemize}
-    \item \textbf{testPositionValues}: checks record accessor methods.
-    \item \textbf{testEqualsAndHashCode}: Verifies value-based equality for positions.
-\end{itemize}
-
-\subsection{Test Summary}
+The following table details the test cases implemented to verify the application's correctness. Tests are automated using JUnit 4.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|l|c|}
+\begin{tabularx}{\textwidth}{|l|X|X|}
 \hline
-\textbf{Test Class} & \textbf{Number of Tests} \\
+\textbf{Test Case} & \textbf{Input / Pre-condition} & \textbf{Expected Output / Post-condition} \\
 \hline
-GameModelTest & 4 \\
+\textit{GameModelTest} & & \\
 \hline
-MotorTest & 4 \\
+testInitialization & Initialize GameModel (60x40 grid, P1: Red, P2: Blue) & P1 at (5, 20), P2 at (54, 20), Game Over: False \\
 \hline
-LevelGeneratorTest & 2 \\
+testUpdateMovesPlayers & Initial state, call \texttt{update()} & P1 moves to (6, 20), P2 moves to (53, 20) \\
 \hline
-DirectionTest & 1 \\
+testWallCollision & P1 adjacent to wall, moving towards it. Call \texttt{update()} twice. & Game Over: True, Winner: P2 (Survivor) \\
 \hline
-PositionTest & 2 \\
+testHeadOnCollision & P1 and P2 facing each other with 1 unit gap. Call \texttt{update()}. & Game Over: True, Winner: Draw \\
 \hline
-\textbf{Total} & \textbf{13} \\
+\textit{MotorTest} & & \\
 \hline
-\end{tabular}
-\caption{Test Coverage Summary}
+testInitialization & Create Motor "Test" at (10, 10), Dir: RIGHT & Pos: (10, 10), Trail Size: 1, Crashed: False \\
+\hline
+testMove & Motor at (0, 0) RIGHT. Call \texttt{move()} & New Pos: (1, 0), Trail Size: 2 \\
+\hline
+testDirectionChange & Motor RIGHT. Call \texttt{setDirection(UP)} then \texttt{move()} & New Pos: (0, -1) (moved UP) \\
+\hline
+testInvalidDirectionChange & Motor RIGHT. Call \texttt{setDirection(LEFT)} then \texttt{move()} & New Pos: (1, 0) (moved RIGHT, invalid turn ignored) \\
+\hline
+\textit{LevelGeneratorTest} & & \\
+\hline
+testGenerateLevelCount & Call \texttt{generateLevel(1)} and \texttt{generateLevel(2)} & Returns 5 obstacles for Lvl 1, 10 for Lvl 2 \\
+\hline
+testSafetyZones & Generate 100 obstacles & 0 obstacles in P1 corner (<10, <10) or P2 corner (>W-10, >H-10) \\
+\hline
+\textit{Other} & & \\
+\hline
+DirectionTest & Access Enum values & Enum contains UP, DOWN, LEFT, RIGHT \\
+\hline
+PositionTest & Create Position(5, 5) & x=5, y=5, correct equality check \\
+\hline
+\end{tabularx}
+\caption{Detailed Test Plan}
 \end{table}
 
 \end{document}

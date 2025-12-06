@@ -57,26 +57,56 @@ public class Motor {
         this.currentDirection = newDirection;
     }
 
+    /**
+     * Gets the name of the player owning this motor.
+     * 
+     * @return The player's name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the color of the motor's trail.
+     * 
+     * @return The color of the motor.
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Gets the current position of the motor on the grid.
+     * 
+     * @return The current position.
+     */
     public Position getPosition() {
         return currentPosition;
     }
 
+    /**
+     * Gets the full trail of positions visited by this motor.
+     * 
+     * @return An unmodifiable list of positions in the trail.
+     */
     public List<Position> getTrail() {
         return Collections.unmodifiableList(trail);
     }
 
+    /**
+     * Checks if the motor has crashed.
+     * 
+     * @return true if the motor has crashed, false otherwise.
+     */
     public boolean isCrashed() {
         return crashed;
     }
 
+    /**
+     * Sets the crashed state of the motor.
+     * 
+     * @param crashed true if the motor has crashed, false otherwise.
+     */
     public void setCrashed(boolean crashed) {
         this.crashed = crashed;
     }

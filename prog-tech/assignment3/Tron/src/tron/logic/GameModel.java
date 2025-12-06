@@ -110,26 +110,56 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Gets the first player's motor.
+     * 
+     * @return The first player's motor.
+     */
     public Motor getPlayer1() {
         return player1;
     }
 
+    /**
+     * Gets the second player's motor.
+     * 
+     * @return The second player's motor.
+     */
     public Motor getPlayer2() {
         return player2;
     }
 
+    /**
+     * Gets the set of obstacles in the game.
+     * 
+     * @return A set of positions representing obstacles.
+     */
     public Set<Position> getObstacles() {
         return obstacles;
     }
 
+    /**
+     * Checks if the game is over.
+     * 
+     * @return true if the game has ended, false otherwise.
+     */
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * Gets the name of the winning player.
+     * 
+     * @return The name of the winner, or "Draw" if it was a tie.
+     */
     public String getWinnerName() {
         return winnerName;
     }
 
+    /**
+     * Gets the elapsed time since the game started in seconds.
+     * 
+     * @return The elapsed time in seconds.
+     */
     public long getElapsedTimeSeconds() {
         if (gameOver)
             return 0;
