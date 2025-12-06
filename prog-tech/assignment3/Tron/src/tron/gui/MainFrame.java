@@ -6,6 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import tron.db.Database;
 
+/**
+ * The main window of the application, managing view switching between Menu,
+ * Game, and HighScores.
+ */
 public class MainFrame extends JFrame {
 
     private final CardLayout cardLayout;
@@ -37,12 +41,24 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Switches the view to the main menu.
+     */
     public void showMenu() {
         cardLayout.show(mainPanel, "MENU");
         pack();
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Starts a new game by switching to the GamePanel and initializing the game
+     * model.
+     * 
+     * @param p1Name  Player 1 name.
+     * @param p1Color Player 1 color.
+     * @param p2Name  Player 2 name.
+     * @param p2Color Player 2 color.
+     */
     public void startGame(String p1Name, Color p1Color, String p2Name, Color p2Color) {
         gamePanel.startNewGame(p1Name, p1Color, p2Name, p2Color);
         cardLayout.show(mainPanel, "GAME");
@@ -51,6 +67,9 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Switches the view to the high score panel and refreshes the scores.
+     */
     public void showHighScores() {
         highScorePanel.refresh();
         cardLayout.show(mainPanel, "HIGHSCORE");

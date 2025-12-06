@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Set;
 import tron.db.Database;
 
+/**
+ * Manages the core game logic, including player states, collisions, and game
+ * loop updates.
+ */
 public class GameModel {
     private final int width;
     private final int height;
@@ -32,6 +36,10 @@ public class GameModel {
         this.startTime = System.currentTimeMillis();
     }
 
+    /**
+     * Updates the game state by moving players and checking collisions.
+     * Should be called in every game loop iteration.
+     */
     public void update() {
         if (gameOver)
             return;
@@ -42,6 +50,9 @@ public class GameModel {
         checkCollisions();
     }
 
+    /**
+     * Checks for collisions for both players and determines the game outcome.
+     */
     private void checkCollisions() {
         boolean p1Crashed = checkCrash(player1);
         boolean p2Crashed = checkCrash(player2);
@@ -67,6 +78,12 @@ public class GameModel {
         }
     }
 
+    /**
+     * Checks if a player has crashed into walls, obstacles, or trails.
+     * 
+     * @param player The player to check.
+     * @return true if the player has crashed, false otherwise.
+     */
     private boolean checkCrash(Motor player) {
         Position pos = player.getPosition();
 

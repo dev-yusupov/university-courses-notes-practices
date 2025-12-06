@@ -11,6 +11,9 @@ import javax.swing.table.DefaultTableModel;
 import tron.db.Database;
 import tron.db.PlayerScore;
 
+/**
+ * The high score panel that displays the top 10 player scores.
+ */
 public class HighScorePanel extends JPanel {
 
     private final MainFrame mainFrame;
@@ -42,6 +45,9 @@ public class HighScorePanel extends JPanel {
         add(backBtn, BorderLayout.SOUTH);
     }
 
+    /**
+     * Refreshes the high score table by fetching the latest data from the database.
+     */
     public void refresh() {
         tableModel.setRowCount(0);
         List<PlayerScore> scores = database.getHighScores();

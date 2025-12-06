@@ -1,0 +1,212 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{float}
+
+\geometry{margin=0.7in}
+
+% Code listing style
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    language=Java,
+    tabsize=4,
+    showstringspaces=false,
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red}
+}
+
+\title{\textbf{Tron Game}}
+\author{Yusupov Boburjon\\Neptun: YTAJDI}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\section{Description of the Exercise}
+
+Implement a Tron-like game where two players control light cycles (motors) on a 2D grid. The game is played
+on a 60x40 grid. Player 1 (Red) starts on the left side moving right, and Player 2 (Blue) starts on the 
+right side moving left. As players move, they leave a trail behind them. If a player collides with a wall, 
+an obstacle, or any existing trail (including their own), they crash and the other player wins. If both 
+players crash simultaneously, it is a draw.
+
+The game must include dynamic obstacles generated for each level. The number of obstacles increases with 
+the level difficulty. The game must also track player scores (number of wins) and store them in a persistent 
+database (PostgreSQL). The application should provide a main menu to enter player names, choose colors, 
+start the game, and view high scores.
+
+\newpage
+
+\section{Class Diagram}
+\begin{figure}[H]
+    \centering
+    % Placeholder for where the image would be if generated
+    \fbox{\begin{minipage}{0.8\textwidth}
+        \centering
+        \vspace{2cm}
+        [Include "diagram.png" here showing relationships between: \\
+        Main, MainFrame, MenuPanel, GamePanel, HighScorePanel, \\
+        GameModel, Motor, LevelGenerator, Database, Position, Direction]
+        \vspace{2cm}
+    \end{minipage}}
+    \caption{Class Diagram of the Tron Application}
+    \label{fig:class-diagram}
+\end{figure}
+
+\subsection{Class Overview}
+
+The application follows the Model-View-Controller (MVC) architectural pattern:
+
+\begin{itemize}
+    \item \textbf{View (GUI)}: Classes in the `tron.gui` package (MainFrame, MenuPanel, GamePanel, HighScorePanel).
+    \item \textbf{Model (Logic)}: Classes in the `tron.logic` package (GameModel, Motor, LevelGenerator, Position, Direction).
+    \item \textbf{Data (DB)}: Classes in the `tron.db` package (Database, PlayerScore).
+    \item \textbf{Controller}: Event handling is managed within the View classes (ActionListeners) delegating to the Model.
+\end{itemize}
+
+\newpage
+
+\section{Class and Method Descriptions}
+
+\subsection{Main Class (tron.Main)}
+Entry point for the application.
+
+\begin{itemize}
+    \item \texttt{main(String[] args)}: Launches the application by creating the \texttt{MainFrame} on the Event Dispatch Thread.
+\end{itemize}
+
+\subsection{Game Mechanics (tron.logic)}
+
+\subsubsection{GameModel}
+Manages the core state of the game session.
+
+\begin{itemize}
+    \item \texttt{update()}: Advances the game state by one tick. Moves players and checks for collisions.
+    \item \texttt{checkCollisions()}: Determines if any player has crashed into walls, obstacles, or trails.
+    \item \texttt{checkCrash(Motor player)}: detailed collision logic for a single player.
+    \item \texttt{getWinnerName()}: Returns the name of the winner or "Draw".
+\end{itemize}
+
+\subsubsection{Motor}
+Represents a player's entity.
+
+\begin{itemize}
+    \item \texttt{move()}: Updates the motor's position based on its current direction and adds the new position to its trail.
+    \item \texttt{setDirection(Direction newDirection)}: Changes the player's direction, preventing 180-degree turns.
+\end{itemize}
+
+\subsubsection{LevelGenerator}
+Handles procedural generation of proper game levels.
+
+\begin{itemize}
+    \item \texttt{generateLevel(int levelIndex)}: Creates a list of random \texttt{Position}s for obstacles. Ensures obstacles do not spawn in player starting safety zones.
+\end{itemize}
+
+\subsection{Database Integration (tron.db)}
+
+\subsubsection{Database}
+Handles JDBC connections to PostgreSQL.
+
+\begin{itemize}
+    \item \texttt{addWin(String playerName)}: Increments the win count for a player in the `results` table. Uses an `INSERT ... ON CONFLICT DO UPDATE` statement.
+    \item \texttt{getHighScores()}: Queries the top 10 players ordered by score.
+\end{itemize}
+
+\subsection{User Interface (tron.gui)}
+
+\subsubsection{MainFrame}
+The main container managing the application screens using `CardLayout`.
+
+\begin{itemize}
+    \item \texttt{showMenu()}: Switches to start screen.
+    \item \texttt{startGame(...)}: Switches to the game view and initializes a new session.
+    \item \texttt{showHighScores()}: Switches to the high score table.
+\end{itemize}
+
+\subsubsection{GamePanel}
+Renders the game loop.
+
+\begin{itemize}
+    \item \texttt{actionPerformed(ActionEvent e)}: The game loop tick handler.
+    \item \texttt{paintComponent(Graphics g)}: Draws the grid, players, trails, and obstacles.
+\end{itemize}
+
+\newpage
+
+\section{Test Cases}
+
+Unit tests are implemented using JUnit 4.
+
+\subsection{Logic Layer Tests}
+
+\subsubsection{GameModelTest}
+\begin{itemize}
+    \item \textbf{testInitialization}: Verifies players start at correct positions.
+    \item \textbf{testUpdateMovesPlayers}: checks that `update()` advances player coordinates.
+    \item \textbf{testWallCollision}: Simulates a player hitting the wall and verifies game over state and winner designation.
+    \item \textbf{testHeadOnCollision}: Simulates players crashing into each other, resulting in a draw.
+\end{itemize}
+
+\subsubsection{MotorTest}
+\begin{itemize}
+    \item \textbf{testInitialization}: Checks initial state of a motor.
+    \item \textbf{testMove}: Verifies movement logic and trail growth.
+    \item \textbf{testDirectionChange}: checks valid 90-degree turns.
+    \item \textbf{testInvalidDirectionChange}: checks that 180-degree turns are ignored.
+\end{itemize}
+
+\subsubsection{LevelGeneratorTest}
+\begin{itemize}
+    \item \textbf{testGenerateLevelCount}: Verifies that the number of obstacles scales with level index.
+    \item \textbf{testSafetyZones}: Ensures no obstacles are generated in the corners where players spawn.
+\end{itemize}
+
+\subsubsection{DirectionTest}
+\begin{itemize}
+    \item \textbf{testEnumValues}: Basic verification of Direction enum constants.
+\end{itemize}
+
+\subsubsection{PositionTest}
+\begin{itemize}
+    \item \textbf{testPositionValues}: checks record accessor methods.
+    \item \textbf{testEqualsAndHashCode}: Verifies value-based equality for positions.
+\end{itemize}
+
+\subsection{Test Summary}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Test Class} & \textbf{Number of Tests} \\
+\hline
+GameModelTest & 4 \\
+\hline
+MotorTest & 4 \\
+\hline
+LevelGeneratorTest & 2 \\
+\hline
+DirectionTest & 1 \\
+\hline
+PositionTest & 2 \\
+\hline
+\textbf{Total} & \textbf{13} \\
+\hline
+\end{tabular}
+\caption{Test Coverage Summary}
+\end{table}
+
+\end{document}

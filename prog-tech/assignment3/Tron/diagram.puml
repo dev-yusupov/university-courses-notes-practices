@@ -1,0 +1,144 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Main {
+    +main(args: String[])
+}
+
+class MainFrame {
+    -cardLayout: CardLayout
+    -mainPanel: JPanel
+    -database: Database
+    +MainFrame()
+    +showMenu()
+    +startGame(p1Name: String, p1Color: Color, p2Name: String, p2Color: Color)
+    +showHighScores()
+}
+
+class MenuPanel {
+    -mainFrame: MainFrame
+    -p1NameField: JTextField
+    -p1ColorCombo: JComboBox<ColorItem>
+    -p2NameField: JTextField
+    -p2ColorCombo: JComboBox<ColorItem>
+    +MenuPanel(mainFrame: MainFrame)
+    -onStart(e: ActionEvent)
+}
+
+class GamePanel {
+    -CELL_SIZE: int
+    -GRID_WIDTH: int
+    -GRID_HEIGHT: int
+    -mainFrame: MainFrame
+    -database: Database
+    -gameModel: GameModel
+    -timer: Timer
+    -levelGenerator: LevelGenerator
+    -currentLevel: int
+    +GamePanel(mainFrame: MainFrame, database: Database)
+    +startNewGame(p1Name: String, p1Color: Color, p2Name: String, p2Color: Color)
+    +actionPerformed(e: ActionEvent)
+    #paintComponent(g: Graphics)
+}
+
+class HighScorePanel {
+    -mainFrame: MainFrame
+    -database: Database
+    -table: JTable
+    -tableModel: DefaultTableModel
+    +HighScorePanel(mainFrame: MainFrame, database: Database)
+    +refresh()
+}
+
+class GameModel {
+    -width: int
+    -height: int
+    -player1: Motor
+    -player2: Motor
+    -obstacles: Set<Position>
+    -database: Database
+    -startTime: long
+    -gameOver: boolean
+    -winnerName: String
+    +GameModel(width: int, height: int, p1Name: String, p1Color: Color, p2Name: String, p2Color: Color, obstacles: List<Position>, db: Database)
+    +update()
+    -checkCollisions()
+    -checkCrash(player: Motor): boolean
+    +getWinnerName(): String
+    +getElapsedTimeSeconds(): long
+}
+
+class Motor {
+    -name: String
+    -color: Color
+    -currentPosition: Position
+    -currentDirection: Direction
+    -trail: List<Position>
+    -crashed: boolean
+    +Motor(name: String, color: Color, startPosition: Position, startDirection: Direction)
+    +move()
+    +setDirection(newDirection: Direction)
+    +getPosition(): Position
+    +getTrail(): List<Position>
+}
+
+class LevelGenerator {
+    -width: int
+    -height: int
+    -random: Random
+    +LevelGenerator(width: int, height: int)
+    +generateLevel(levelIndex: int): List<Position>
+}
+
+enum Direction {
+    UP
+    DOWN
+    LEFT
+    RIGHT
+}
+
+class Position {
+    +x: int
+    +y: int
+}
+
+class Database {
+    -URL: String
+    -USER: String
+    -PASS: String
+    +Database()
+    -getConnection(): Connection
+    +addWin(playerName: String)
+    +getHighScores(): List<PlayerScore>
+}
+
+class PlayerScore {
+    +name: String
+    +wins: int
+    +compareTo(o: PlayerScore): int
+}
+
+Main ..> MainFrame : uses
+MainFrame *-- MenuPanel
+MainFrame *-- GamePanel
+MainFrame *-- HighScorePanel
+MainFrame o-- Database
+
+GamePanel o-- Database
+GamePanel o-- GameModel
+GamePanel *-- LevelGenerator
+
+MenuPanel o-- MainFrame
+HighScorePanel o-- MainFrame
+HighScorePanel o-- Database
+
+GameModel o-- Motor
+GameModel o-- Position
+GameModel o-- Database
+
+Motor o-- Position
+Motor o-- Direction
+
+LevelGenerator ..> Position : creates
+Database ..> PlayerScore : creates
+@enduml

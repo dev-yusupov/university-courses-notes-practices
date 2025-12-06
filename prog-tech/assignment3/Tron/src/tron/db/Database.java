@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles database operations for the Tron game, using PostgreSQL.
+ */
 public class Database {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/tron";
@@ -18,10 +21,22 @@ public class Database {
 
     }
 
+    /**
+     * Establishes a connection to the PostgreSQL database.
+     * 
+     * @return A Connection object.
+     * @throws SQLException If a database access error occurs.
+     */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
     }
 
+    /**
+     * Adds a win to the specified player's score.
+     * If the player exists, increments their score; otherwise creates a new entry.
+     * 
+     * @param playerName The name of the player who won.
+     */
     public void addWin(String playerName) {
         String sql = "INSERT INTO results (player_name, score) VALUES (?, 1) " +
                 "ON CONFLICT (player_name) DO UPDATE SET score = results.score + 1";
@@ -37,6 +52,11 @@ public class Database {
         }
     }
 
+    /**
+     * Retrieves the top 10 high scores from the database.
+     * 
+     * @return A list of PlayerScore objects representing the high scores.
+     */
     public List<PlayerScore> getHighScores() {
         List<PlayerScore> scores = new ArrayList<>();
         String sql = "SELECT player_name, score FROM results ORDER BY score DESC LIMIT 10";

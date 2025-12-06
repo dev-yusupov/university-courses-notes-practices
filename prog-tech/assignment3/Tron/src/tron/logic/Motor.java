@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents a player's light cycle (motor) in the game.
+ * Manages position, direction, color, and trail.
+ */
 public class Motor {
     private final String name;
     private final Color color;

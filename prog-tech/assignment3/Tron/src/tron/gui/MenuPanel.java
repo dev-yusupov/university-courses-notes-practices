@@ -12,6 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * The menu panel where players can enter their names and choose colors.
+ */
 public class MenuPanel extends JPanel {
 
     private final MainFrame mainFrame;
@@ -65,6 +68,12 @@ public class MenuPanel extends JPanel {
         add(exitBtn);
     }
 
+    /**
+     * Handles the start button click action.
+     * Validates input and starts the game.
+     * 
+     * @param e The action event.
+     */
     private void onStart(ActionEvent e) {
         String p1Name = p1NameField.getText().trim();
         String p2Name = p2NameField.getText().trim();
@@ -102,6 +111,10 @@ public class MenuPanel extends JPanel {
         };
     }
 
+    /**
+     * A helper record to associate color names with Color objects for the combo
+     * box.
+     */
     private record ColorItem(String name, Color color) {
         @Override
         public String toString() {

@@ -18,6 +18,10 @@ import tron.logic.LevelGenerator;
 import tron.logic.Motor;
 import tron.logic.Position;
 
+/**
+ * The main game panel responsible for rendering the game loop and handling user
+ * input.
+ */
 public class GamePanel extends JPanel implements ActionListener {
 
     private static final int CELL_SIZE = 10;
@@ -68,6 +72,15 @@ public class GamePanel extends JPanel implements ActionListener {
         timer = new Timer(100, this);
     }
 
+    /**
+     * Starts a new game with the specified player names and colors.
+     * Generates a new level and starts the game timer.
+     * 
+     * @param p1Name  Name of player 1.
+     * @param p1Color Color of player 1.
+     * @param p2Name  Name of player 2.
+     * @param p2Color Color of player 2.
+     */
     public void startNewGame(String p1Name, Color p1Color, String p2Name, Color p2Color) {
         List<Position> obstacles = levelGenerator.generateLevel(currentLevel);
 
@@ -76,6 +89,12 @@ public class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Called by the Swing timer every tick to update the game model.
+     * Handles game over conditions and repaints the screen.
+     * 
+     * @param e The action event.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (gameModel != null && !gameModel.isGameOver()) {
@@ -95,6 +114,11 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Paints the game state (players, trails, obstacles, UI) on the panel.
+     * 
+     * @param g The graphics context.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
