@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import tron.database.Database;
+import tron.db.Database;
 import tron.logic.Direction;
 import tron.logic.GameModel;
 import tron.logic.LevelGenerator;
@@ -29,14 +29,14 @@ public class GamePanel extends JPanel implements ActionListener {
     private GameModel gameModel;
     private Timer timer;
     private final LevelGenerator levelGenerator;
-    private int currentLevel = 1; // Unused for now, but good for structure
+    private int currentLevel = 1;
 
     public GamePanel(MainFrame mainFrame, Database database) {
         this.mainFrame = mainFrame;
         this.database = database;
         this.levelGenerator = new LevelGenerator(GRID_WIDTH, GRID_HEIGHT);
 
-        setPreferredSize(new Dimension(GRID_WIDTH * CELL_SIZE, GRID_HEIGHT * CELL_SIZE + 30)); // +30 for info bar
+        setPreferredSize(new Dimension(GRID_WIDTH * CELL_SIZE, GRID_HEIGHT * CELL_SIZE + 30));
         setBackground(Color.BLACK);
 
         setFocusable(true);
@@ -47,13 +47,11 @@ public class GamePanel extends JPanel implements ActionListener {
                     return;
 
                 switch (e.getKeyCode()) {
-                    // P1 (WASD)
                     case KeyEvent.VK_W -> gameModel.getPlayer1().setDirection(Direction.UP);
                     case KeyEvent.VK_S -> gameModel.getPlayer1().setDirection(Direction.DOWN);
                     case KeyEvent.VK_A -> gameModel.getPlayer1().setDirection(Direction.LEFT);
                     case KeyEvent.VK_D -> gameModel.getPlayer1().setDirection(Direction.RIGHT);
 
-                    // P2 (Arrows)
                     case KeyEvent.VK_UP -> gameModel.getPlayer2().setDirection(Direction.UP);
                     case KeyEvent.VK_DOWN -> gameModel.getPlayer2().setDirection(Direction.DOWN);
                     case KeyEvent.VK_LEFT -> gameModel.getPlayer2().setDirection(Direction.LEFT);
@@ -67,12 +65,10 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         });
 
-        // 100ms or so tick.
         timer = new Timer(100, this);
     }
 
     public void startNewGame(String p1Name, Color p1Color, String p2Name, Color p2Color) {
-        // Generate Level
         List<Position> obstacles = levelGenerator.generateLevel(currentLevel);
 
         gameModel = new GameModel(GRID_WIDTH, GRID_HEIGHT, p1Name, p1Color, p2Name, p2Color, obstacles, database);
@@ -106,19 +102,16 @@ public class GamePanel extends JPanel implements ActionListener {
         if (gameModel == null)
             return;
 
-        // Draw Info Bar (Time)
         g.setColor(Color.WHITE);
         g.drawString("Time: " + gameModel.getElapsedTimeSeconds() + "s", 10, GRID_HEIGHT * CELL_SIZE + 20);
         g.drawString(gameModel.getPlayer1().getName(), 100, GRID_HEIGHT * CELL_SIZE + 20);
         g.drawString(gameModel.getPlayer2().getName(), 300, GRID_HEIGHT * CELL_SIZE + 20);
 
-        // Draw Obstacles
         g.setColor(Color.GRAY);
         for (Position pos : gameModel.getObstacles()) {
             g.fillRect(pos.x() * CELL_SIZE, pos.y() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
 
-        // Draw Players
         drawPlayer(g, gameModel.getPlayer1());
         drawPlayer(g, gameModel.getPlayer2());
     }
@@ -126,13 +119,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private void drawPlayer(Graphics g, Motor player) {
         g.setColor(player.getColor());
 
-        // Draw Trail
         for (Position pos : player.getTrail()) {
             g.fillRect(pos.x() * CELL_SIZE, pos.y() * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
-
-        // Head (slightly brighter or just same?)
-        // Let's make head specific
         Position head = player.getPosition();
         g.setColor(player.getColor().brighter());
         g.fillRect(head.x() * CELL_SIZE, head.y() * CELL_SIZE, CELL_SIZE, CELL_SIZE);

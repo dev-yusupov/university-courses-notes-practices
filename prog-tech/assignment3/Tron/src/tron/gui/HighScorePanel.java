@@ -1,7 +1,6 @@
 package tron.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -9,9 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import tron.database.Database;
-import tron.database.PlayerScore;
+import tron.db.Database;
+import tron.db.PlayerScore;
 
 public class HighScorePanel extends JPanel {
 

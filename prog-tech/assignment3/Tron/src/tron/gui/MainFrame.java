@@ -2,15 +2,9 @@ package tron.gui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import tron.database.Database;
-import tron.database.FileDatabase;
-import tron.database.PlayerScore;
-import tron.database.PostgresDatabase;
-import tron.logic.LevelGenerator;
+import tron.db.Database;
 
 public class MainFrame extends JFrame {
 
@@ -26,8 +20,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        // database = new FileDatabase();
-        database = new PostgresDatabase();
+        database = new Database();
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
@@ -46,7 +39,7 @@ public class MainFrame extends JFrame {
 
     public void showMenu() {
         cardLayout.show(mainPanel, "MENU");
-        pack(); // Resize potentially
+        pack();
         setLocationRelativeTo(null);
     }
 
@@ -61,7 +54,7 @@ public class MainFrame extends JFrame {
     public void showHighScores() {
         highScorePanel.refresh();
         cardLayout.show(mainPanel, "HIGHSCORE");
-        pack(); // Resize
+        pack();
         setLocationRelativeTo(null);
     }
 }

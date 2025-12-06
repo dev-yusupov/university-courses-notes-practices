@@ -30,24 +30,22 @@ public class MenuPanel extends JPanel {
         title.setFont(title.getFont().deriveFont(24.0f));
         add(title);
 
-        // P1 Setup
         JPanel p1Panel = new JPanel(new GridLayout(2, 2));
         p1Panel.setBorder(BorderFactory.createTitledBorder("Player 1 (WASD)"));
         p1NameField = new JTextField("Player 1");
         p1ColorCombo = new JComboBox<>(getColorItems());
-        p1ColorCombo.setSelectedIndex(0); // Red
+        p1ColorCombo.setSelectedIndex(0);
         p1Panel.add(new JLabel("Name:"));
         p1Panel.add(p1NameField);
         p1Panel.add(new JLabel("Color:"));
         p1Panel.add(p1ColorCombo);
         add(p1Panel);
 
-        // P2 Setup
         JPanel p2Panel = new JPanel(new GridLayout(2, 2));
         p2Panel.setBorder(BorderFactory.createTitledBorder("Player 2 (Arrows)"));
         p2NameField = new JTextField("Player 2");
         p2ColorCombo = new JComboBox<>(getColorItems());
-        p2ColorCombo.setSelectedIndex(1); // Blue
+        p2ColorCombo.setSelectedIndex(1);
         p2Panel.add(new JLabel("Name:"));
         p2Panel.add(p2NameField);
         p2Panel.add(new JLabel("Color:"));

@@ -4,11 +4,8 @@ import java.awt.Color;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import tron.database.Database;
+import tron.db.Database;
 
-/**
- * Manages the game state.
- */
 public class GameModel {
     private final int width;
     private final int height;
@@ -26,11 +23,8 @@ public class GameModel {
         this.height = height;
         this.database = db;
 
-        // Initialize Players
-        // P1 starts top-left, moving right
         this.player1 = new Motor(p1Name, p1Color, new Position(5, height / 2), Direction.RIGHT);
 
-        // P2 starts bottom-right, moving left
         this.player2 = new Motor(p2Name, p2Color, new Position(width - 6, height / 2), Direction.LEFT);
 
         this.obstacles = new HashSet<>(obstacles);
@@ -52,7 +46,6 @@ public class GameModel {
         boolean p1Crashed = checkCrash(player1);
         boolean p2Crashed = checkCrash(player2);
 
-        // Head-on collision check (swapping positions or same position)
         if (player1.getPosition().equals(player2.getPosition())) {
             p1Crashed = true;
             p2Crashed = true;
@@ -77,20 +70,15 @@ public class GameModel {
     private boolean checkCrash(Motor player) {
         Position pos = player.getPosition();
 
-        // Wall collision
         if (pos.x() < 0 || pos.x() >= width || pos.y() < 0 || pos.y() >= height) {
             return true;
         }
 
-        // Obstacle collision
         if (obstacles.contains(pos)) {
             return true;
         }
 
-        // Self trail collision (skip the head which is the last element)
         List<Position> p1Trail = player1.getTrail();
-        // Check against P1 Trail (excluding current head for self, but checking all for
-        // other)
         for (int i = 0; i < p1Trail.size() - (player == player1 ? 1 : 0); i++) {
             if (pos.equals(p1Trail.get(i)))
                 return true;
@@ -127,7 +115,7 @@ public class GameModel {
 
     public long getElapsedTimeSeconds() {
         if (gameOver)
-            return 0; // Or freeze time?
+            return 0;
         return (System.currentTimeMillis() - startTime) / 1000;
     }
 }

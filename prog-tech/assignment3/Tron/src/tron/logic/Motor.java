@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Represents a Motor/Player in the game.
- */
 public class Motor {
     private final String name;
     private final Color color;
@@ -44,7 +41,6 @@ public class Motor {
     }
 
     public void setDirection(Direction newDirection) {
-        // Prevent 180 degree turns
         if (currentDirection == Direction.UP && newDirection == Direction.DOWN)
             return;
         if (currentDirection == Direction.DOWN && newDirection == Direction.UP)
