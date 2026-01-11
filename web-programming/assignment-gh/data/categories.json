@@ -1,0 +1,8 @@
+[
+    {"id": 1, "name": "Infrastructure"},
+    {"id": 2, "name": "Education"},
+    {"id": 3, "name": "Environment"},
+    {"id": 4, "name": "Culture"},
+    {"id": 5, "name": "Sports"},
+    {"id": 6, "name": "Health"}
+]

@@ -1,0 +1,16 @@
+[
+    {
+        "id": "user_696400d81e7755.95777847",
+        "username": "test",
+        "email": "test@test.com",
+        "password": "$2y$12$AGObzpbmbVUSjjsb5lqJkO0bU7Qw1iKmXu4ld8ruXmk\/DrC.gOThG",
+        "is_admin": false
+    },
+    {
+        "id": "admin_696401004fcbf5.28239869",
+        "username": "admin",
+        "email": "admin@example.com",
+        "password": "$2y$12$QNBWvpNcI91HPIt4JfNwmOt.m7wa28S4XyP\/u918g7IHg2n4jLEQC",
+        "is_admin": true
+    }
+]

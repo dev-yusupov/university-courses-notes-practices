@@ -1,0 +1,25 @@
+# User data - exclude from version control to protect user privacy
+data/users.json
+data/projects.json
+data/votes.json
+
+# Keep categories as they are configuration
+!data/categories.json
+
+# PHP session files
+sessions/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
