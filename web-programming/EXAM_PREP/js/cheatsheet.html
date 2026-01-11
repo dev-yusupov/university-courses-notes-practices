@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Exam Cheatsheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+
+        /* Table of Contents */
+        .toc {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-right: 3px solid #3498db;
+        }
+
+        .toc h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #3498db;
+            text-align: center;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc > ul > li {
+            margin-bottom: 15px;
+        }
+
+        .toc a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .toc a:hover {
+            background: #34495e;
+            color: #3498db;
+            padding-left: 15px;
+        }
+
+        .toc .main-section {
+            font-weight: bold;
+            font-size: 15px;
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+
+        .toc .sub-section {
+            padding-left: 15px;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px 60px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        h3 {
+            font-size: 22px;
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        h2::before {
+            content: "📌 ";
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, #3498db, transparent);
+            margin: 50px 0 30px 0;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Comments in code */
+        .comment {
+            color: #6a737d;
+        }
+
+        /* Quick Reference Box */
+        .quick-ref {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .quick-ref h2 {
+            color: #856404;
+            border: none;
+            margin-top: 0;
+        }
+
+        .quick-ref p {
+            margin: 10px 0;
+            color: #856404;
+        }
+
+        /* Strong emphasis */
+        strong {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        /* Math formulas */
+        .formula {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        /* Print styles */
+        @media print {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .toc {
+                display: none;
+            }
+            .content {
+                padding: 20px;
+            }
+            pre {
+                page-break-inside: avoid;
+            }
+            h2, h3 {
+                page-break-after: avoid;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Table of Contents -->
+        <nav class="toc">
+            <h2>📑 Quick Navigation</h2>
+            <ul>
+                <li>
+                    <a href="#section-1" class="main-section">1. Core JavaScript</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-1-1">1.1 Array Methods</a></li>
+                        <li class="sub-section"><a href="#section-1-2">1.2 String Methods</a></li>
+                        <li class="sub-section"><a href="#section-1-3">1.3 Math & Random</a></li>
+                        <li class="sub-section"><a href="#section-1-4">1.4 Date & Time</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-2" class="main-section">2. DOM Manipulation</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-2-1">2.1 DOM Selection</a></li>
+                        <li class="sub-section"><a href="#section-2-2">2.2 Modifying Elements</a></li>
+                        <li class="sub-section"><a href="#section-2-3">2.3 Creating Elements</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-3" class="main-section">3. Events</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-3-1">3.1 Event Handling</a></li>
+                        <li class="sub-section"><a href="#section-3-2">3.2 Event Delegation</a></li>
+                        <li class="sub-section"><a href="#section-3-3">3.3 Common Events</a></li>
+                        <li class="sub-section"><a href="#section-3-4">3.4 Event Propagation</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-4" class="main-section">4. Forms</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-4-1">4.1 Input Types</a></li>
+                        <li class="sub-section"><a href="#section-4-2">4.2 Form Events</a></li>
+                        <li class="sub-section"><a href="#section-4-3">4.3 Form Validation</a></li>
+                        <li class="sub-section"><a href="#section-4-4">4.4 Getting Form Data</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-5" class="main-section">5. Canvas API</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-5-1">5.1 Initializing Canvas</a></li>
+                        <li class="sub-section"><a href="#section-5-2">5.2 Drawing Shapes</a></li>
+                        <li class="sub-section"><a href="#section-5-3">5.3 Images</a></li>
+                        <li class="sub-section"><a href="#section-5-4">5.4 Angles Formula</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-6" class="main-section">6. Async JavaScript</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-6-1">6.1 Fetch API - GET</a></li>
+                        <li class="sub-section"><a href="#section-6-2">6.2 Fetch API - POST</a></li>
+                        <li class="sub-section"><a href="#section-6-3">6.3 Async/Await</a></li>
+                        <li class="sub-section"><a href="#section-6-4">6.4 Error Handling</a></li>
+                        <li class="sub-section"><a href="#section-6-5">6.5 Parallel Requests</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-7" class="main-section">7. Timers</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-7-1">7.1 setTimeout</a></li>
+                        <li class="sub-section"><a href="#section-7-2">7.2 setInterval</a></li>
+                        <li class="sub-section"><a href="#section-7-3">7.3 setTimeout vs setInterval</a></li>
+                        <li class="sub-section"><a href="#section-7-4">7.4 Sleep/Delay</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#section-8" class="main-section">8. Storage</a>
+                    <ul>
+                        <li class="sub-section"><a href="#section-8-1">8.1 Local Storage API</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#quick-reference" class="main-section">🔍 Quick Reference</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <h1>JavaScript Exam Cheatsheet</h1>
+
+            <h2 id="section-1">1. Core JavaScript</h2>
+
+            <h3 id="section-1-1">1.1 Array Methods</h3>
+            <pre><code>const numbers = [1, 5, 10, 15];
+const users = [
+    { id: 1, name: 'Anna', age: 22 },
+    { id: 2, name: 'Bob', age: 17 }
+];
+
+// 1. FILTER: Returns specific items (Array -> Array)
+const adults = users.filter(u => u.age >= 18); 
+
+// 2. MAP: Transforms every item (Array -> Array)
+const names = users.map(u => u.name); // ['Anna', 'Bob']
+const html = users.map(u => `&lt;li&gt;${u.name}&lt;/li&gt;`).join(''); // Great for generating lists!
+
+// 3. FIND: Returns the FIRST match (Array -> Item)
+const anna = users.find(u => u.id === 1);
+
+// 4. SOME / EVERY: Returns Boolean (Array -> Boolean)
+const hasMinors = users.some(u => u.age < 18); // true
+const allAdults = users.every(u => u.age >= 18); // false
+
+// 5. SORT: Mutates the array! (Returns Array)
+// a - b = Ascending (1, 2, 3)
+// b - a = Descending (3, 2, 1)
+users.sort((a, b) => a.age - b.age); 
+
+// 6. REDUCE: Accumulate values (Array -> Single Value)
+// Total age: start at 0
+const totalAge = users.reduce((sum, u) => sum + u.age, 0);</code></pre>
+
+            <h3 id="section-1-2">1.2 String Methods</h3>
+            <pre><code>const str = "Hello World";
+str.includes("World");  // true
+str.startsWith("He");   // true
+str.split(" ");         // ["Hello", "World"] (String to Array)
+str.slice(0, 5);        // "Hello"
+str.toLowerCase();      // "hello world"
+parseInt("42px");       // 42 (Extracts number)</code></pre>
+
+            <h3 id="section-1-3">1.3 Math & Random</h3>
+            <pre><code>// Get random integer between min and max (inclusive)
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Get random color
+function randomColor() {
+    return `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+}
+
+// Distance between two points (Pythagoras) - collision detection
+function getDistance(x1, y1, x2, y2) {
+    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+}</code></pre>
+
+            <h3 id="section-1-4">1.4 Date & Time</h3>
+            <pre><code>const now = new Date();
+
+// Getters
+now.getFullYear();  // 2023
+now.getMonth();     // 0-11 (0 is Jan, 11 is Dec) - TRAP!
+now.getDate();      // 1-31 (Day of month)
+now.getDay();       // 0-6 (0 is Sunday) - TRAP!
+now.getHours();     // 0-23
+now.getMinutes();   // 0-59
+now.getTime();      // Timestamp (milliseconds since 1970)
+
+// Creating a specific date
+const deadline = new Date('2023-12-31');</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-2">2. DOM Manipulation</h2>
+
+            <h3 id="section-2-1">2.1 DOM Selection</h3>
+            <pre><code>const btn  = document.querySelector('#submit-btn');   // Single element (CSS syntax)
+const rows = document.querySelectorAll('table tr');   // NodeList (Array-like)
+
+// Converting NodeList to Array (to use .map or .filter)
+const rowsArray = Array.from(rows);</code></pre>
+
+            <h3 id="section-2-2">2.2 Modifying Elements</h3>
+            <pre><code>// CONTENT
+el.textContent = 'New Text';       // Safe (escapes HTML)
+el.innerHTML   = '&lt;span&gt;Hi&lt;/span&gt;';// Renders HTML (careful of XSS)
+
+// CLASSES
+el.classList.add('active');
+el.classList.remove('hidden');
+el.classList.toggle('selected');
+el.classList.contains('active'); // boolean
+
+// STYLES
+el.style.backgroundColor = 'red'; // camelCase
+el.style.display = 'none';
+
+// ATTRIBUTES
+el.setAttribute('src', 'img.jpg');
+el.getAttribute('data-id');
+el.dataset.id = 5; // Shortcut for data-id</code></pre>
+
+            <h3 id="section-2-3">2.3 Creating Elements</h3>
+            <pre><code>// The Long Way
+const div = document.createElement('div');
+div.classList.add('card');
+div.textContent = 'Hello';
+document.body.appendChild(div);
+
+// The Fast Way (Modern)
+document.body.insertAdjacentHTML('beforeend', `
+    &lt;div class="card"&gt;Hello&lt;/div&gt;
+`);</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-3">3. Events</h2>
+
+            <h3 id="section-3-1">3.1 Event Handling</h3>
+            <pre><code>button.addEventListener('click', (event) => {
+    event.preventDefault(); // Stop form submission
+    console.log('Clicked!');
+});</code></pre>
+
+            <h3 id="section-3-2">3.2 Event Delegation</h3>
+            <pre><code>// Attach listener to the PARENT (e.g., &lt;ul&gt; or &lt;table&gt;), not the children
+listParent.addEventListener('click', (e) => {
+    // Check if the clicked thing (or its parent) matches your selector
+    const btn = e.target.closest('.delete-btn');
+    
+    // Ensure we actually clicked inside the parent (sanity check)
+    if (btn && listParent.contains(btn)) {
+        // Handle the click
+        const id = btn.dataset.id;
+        console.log('Deleting item:', id);
+    }
+});</code></pre>
+
+            <h3 id="section-3-3">3.3 Common Events</h3>
+            <ul>
+                <li><code>click</code> - Mouse click</li>
+                <li><code>submit</code> - Form submission</li>
+                <li><code>input</code> - Input value changed</li>
+                <li><code>change</code> - Input lost focus after change</li>
+                <li><code>keydown</code> / <code>keyup</code> - Keyboard key pressed/released</li>
+            </ul>
+
+            <h3 id="section-3-4">3.4 Event Propagation</h3>
+            <pre><code>button.addEventListener('click', (e) => {
+    e.stopPropagation(); // Stops the event from going to the parent
+    // e.preventDefault(); // Prevents default browser action (like submitting form)
+});</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-4">4. Forms</h2>
+
+            <h3 id="section-4-1">4.1 Input Types</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>HTML Input Type</th>
+                        <th>JS Property</th>
+                        <th>What it returns</th>
+                        <th>Exam Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>&lt;input type="number"&gt;</code></td>
+                        <td><code>el.valueAsNumber</code></td>
+                        <td>Number (or NaN)</td>
+                        <td>Calculators. Saves you from writing parseFloat().</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;input type="date"&gt;</code></td>
+                        <td><code>el.valueAsDate</code></td>
+                        <td>Date Object</td>
+                        <td>Timers/Calendars. Returns a real JS Date object.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;input type="checkbox"&gt;</code></td>
+                        <td><code>el.checked</code></td>
+                        <td>Boolean (true/false)</td>
+                        <td>Filters. Never use .value for checkboxes.</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;input type="file"&gt;</code></td>
+                        <td><code>el.files</code></td>
+                        <td>FileList (Array-like)</td>
+                        <td>Image Previews. Contains the file binary data.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Radio Buttons:</strong></p>
+            <pre><code>// HTML: 
+// &lt;input type="radio" name="gender" value="male"&gt;
+// &lt;input type="radio" name="gender" value="female"&gt;
+
+const radios = form.elements.gender; // Returns a RadioNodeList (collection)
+const selectedValue = radios.value;  // Returns the value of the CHECKED one directly!</code></pre>
+
+            <p><strong>Select Dropdowns:</strong></p>
+            <pre><code>const select = form.elements.country;
+
+// Get selected value (e.g., "US")
+console.log(select.value);
+
+// Get the text inside the option (e.g., "United States")
+const text = select.options[select.selectedIndex].text;
+
+// Get multiple values (if &lt;select multiple&gt;)
+// You must loop manually, .value only returns the first one.
+const selected = Array.from(select.selectedOptions).map(opt => opt.value);</code></pre>
+
+            <h3 id="section-4-2">4.2 Form Events</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Fired When</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>submit</code></td>
+                        <td>Form is submitted (Enter key or Button)</td>
+                        <td>Validation & Data Sending. Always preventDefault().</td>
+                    </tr>
+                    <tr>
+                        <td><code>input</code></td>
+                        <td>Value changes (every keystroke)</td>
+                        <td>Real-time Search or Character Count.</td>
+                    </tr>
+                    <tr>
+                        <td><code>change</code></td>
+                        <td>Value changes + focus lost</td>
+                        <td>Dropdowns (Select) or Checkboxes.</td>
+                    </tr>
+                    <tr>
+                        <td><code>focus</code> / <code>blur</code></td>
+                        <td>Cursor enters/leaves field</td>
+                        <td>Highlighting active fields or "Touched" validation.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 id="section-4-3">4.3 Form Validation</h3>
+            <pre><code>const emailInput = form.elements.email;
+
+emailInput.addEventListener('input', () => {
+    if (emailInput.value.endsWith('@elte.hu')) {
+        emailInput.setCustomValidity(''); // Valid
+    } else {
+        emailInput.setCustomValidity('You must use an ELTE address!'); // Invalid
+    }
+});
+
+// To trigger the bubble:
+form.addEventListener('submit', (e) => {
+    if (!form.checkValidity()) {
+        e.preventDefault(); // Stop submit
+        // The browser automatically shows the error bubbles here
+    }
+});</code></pre>
+
+            <h3 id="section-4-4">4.4 Getting Form Data</h3>
+            <pre><code>// Get all form data as an Object
+function getFormData(formElement) {
+    const formData = new FormData(formElement);
+    // Convert to a plain JavaScript Object
+    return Object.fromEntries(formData.entries());
+}
+
+// Usage
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = getFormData(form);
+    console.log(data); // { username: "John", age: "22", gender: "male" }
+});</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-5">5. Canvas API</h2>
+
+            <h3 id="section-5-1">5.1 Initializing Canvas</h3>
+            <pre><code>const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');</code></pre>
+
+            <h3 id="section-5-2">5.2 Drawing Shapes</h3>
+            <pre><code>// Rectangles
+ctx.fillStyle = 'red';              // Set color
+ctx.fillRect(x, y, w, h);           // Filled square
+ctx.strokeStyle = 'blue';           // Border color
+ctx.strokeRect(x, y, w, h);         // Border only
+ctx.clearRect(0, 0, width, height); // Erase everything
+
+// Paths (Lines, Custom Shapes)
+ctx.beginPath();
+ctx.moveTo(50, 50);   // Start point
+ctx.lineTo(100, 100); // Draw line
+ctx.lineTo(100, 50);
+ctx.closePath();      // Auto-connect back to start
+ctx.fill();           // Fill the shape
+
+// Circles (Arcs)
+ctx.beginPath();
+// x, y, radius, startAngle, endAngle
+ctx.arc(100, 100, 50, 0, Math.PI * 2); 
+ctx.fill();</code></pre>
+
+            <h3 id="section-5-3">5.3 Images</h3>
+            <pre><code>const img = new Image();
+img.src = 'player.png';
+img.onload = () => {
+    ctx.drawImage(img, x, y, width, height);
+};</code></pre>
+
+            <h3 id="section-5-4">5.4 Angles Formula</h3>
+            <div class="formula">
+                <p>If you get stuck on the angles in the exam: <strong>Full Circle = Math.PI * 2 (Radians).</strong> Canvas starts 0 degrees at "3 o'clock". To move start to "12 o'clock", subtract 90 degrees (Math.PI / 2).</p>
+                <p><strong>Formula:</strong> Angle = (CurrentValue / MaxValue) × 2π - π/2</p>
+            </div>
+            <pre><code>// Example (Seconds):
+const secondAngle = (seconds / 60) * (Math.PI * 2) - (Math.PI / 2);</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-6">6. Asynchronous JavaScript</h2>
+
+            <h3 id="section-6-1">6.1 Fetch API - GET</h3>
+            <pre><code>fetch('api.php?action=list')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Process array here
+    })
+    .catch(err => console.error(err));</code></pre>
+
+            <h3 id="section-6-2">6.2 Fetch API - POST</h3>
+            <pre><code>const data = { username: 'john', score: 10 };
+
+fetch('save_score.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+})
+.then(resp => resp.json())
+.then(result => console.log('Saved!', result));</code></pre>
+
+            <h3 id="section-6-3">6.3 Async/Await</h3>
+            <pre><code>async function loadData() {
+    // 1. Await the fetch call
+    const response = await fetch('api.php?action=list');
+    
+    // 2. Await the JSON parsing
+    const data = await response.json();
+    
+    // 3. Use data
+    console.log(data);
+}
+
+loadData();</code></pre>
+
+            <h3 id="section-6-4">6.4 Error Handling</h3>
+            <pre><code>async function safeLoad() {
+    try {
+        const response = await fetch('api.php');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Success:', data);
+
+    } catch (error) {
+        console.error('Failed to load:', error.message);
+        // Update UI to show error
+        document.querySelector('#error-msg').textContent = 'Connection failed!';
+    }
+}</code></pre>
+
+            <h3 id="section-6-5">6.5 Parallel Requests</h3>
+            <pre><code>async function loadAll() {
+    try {
+        // Start both requests instantly
+        const [usersResp, postsResp] = await Promise.all([
+            fetch('api.php?data=users'),
+            fetch('api.php?data=posts')
+        ]);
+
+        const users = await usersResp.json();
+        const posts = await postsResp.json();
+
+        console.log(users, posts);
+
+    } catch (err) {
+        console.error('One or both failed', err);
+    }
+}</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-7">7. Timers</h2>
+
+            <h3 id="section-7-1">7.1 setTimeout</h3>
+            <pre><code>// Separate function
+function tick() {
+  console.log('tick')
+}
+setTimeout(tick, 1000)
+
+// Function literal
+setTimeout(function () {
+  console.log('tick')
+}, 1000)
+
+// Clear timer
+const timer = setTimeout(() => {}, 1000)
+// do something, or even in an event:
+clearTimeout(timer)</code></pre>
+
+            <h3 id="section-7-2">7.2 setInterval</h3>
+            <pre><code>// Separate function
+function tick() {
+  console.log('tick')
+}
+setInterval(tick, 1000)
+
+// In-place function
+setInterval(function () {
+  console.log('tick')
+}, 1000)
+
+// Clear timer
+const timer = setInterval(() => {}, 1000)
+// do something, or even in an event:
+clearInterval(timer)</code></pre>
+
+            <h3 id="section-7-3">7.3 setTimeout vs setInterval</h3>
+            <ul>
+                <li><code>setInterval</code> runs repeatedly at fixed intervals.</li>
+                <li><code>setTimeout</code> runs once after a delay. To repeat, you must call it again within the function.</li>
+                <li><code>setTimeout</code> is often preferred for animations to avoid overlapping calls if the function takes longer than the interval time.</li>
+            </ul>
+
+            <h3 id="section-7-4">7.4 Sleep/Delay</h3>
+            <pre><code>// 1. Create the helper
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// 2. Use inside an async function
+async function demo() {
+    console.log('Start');
+    await sleep(2000); // Pauses execution for 2 seconds
+    console.log('End');
+}</code></pre>
+
+            <div class="section-divider"></div>
+
+            <h2 id="section-8">8. Storage</h2>
+
+            <h3 id="section-8-1">8.1 Local Storage API</h3>
+            <pre><code>// Storing values
+localStorage.setItem("foo", 42);
+// or
+localStorage.bar = 42;
+
+// Reading values
+console.log(localStorage.getItem("foo"));
+// or
+console.log(localStorage.bar);
+
+// Storing complex data
+const data = [1, 3, 5, 7];
+localStorage.setItem('data', JSON.stringify(data));
+const loadedData = JSON.parse(localStorage.getItem('data'));</code></pre>
+
+            <div class="section-divider"></div>
+
+            <div id="quick-reference" class="quick-ref">
+                <h2>🔍 Quick Reference</h2>
+                <p><strong>Most Used Array Methods:</strong> filter, map, find, reduce, sort</p>
+                <p><strong>Most Common Events:</strong> click, submit, input, change</p>
+                <p><strong>Canvas Full Circle:</strong> Math.PI * 2</p>
+                <p><strong>Fetch Patterns:</strong> Always use .then() or async/await, never forget .json()</p>
+                <p><strong>Form Validation:</strong> Use setCustomValidity() for custom error messages</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in TOC
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.toc a').forEach(link => {
+                        link.style.fontWeight = link.getAttribute('href') === '#' + id ? 'bold' : 'normal';
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('h2[id], h3[id]').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add Ctrl+F hint
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'f') {
+                console.log('💡 Tip: Use browser search (Ctrl+F) to find specific topics!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Clock</title>
+    <style>
+        body {
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #222;
+            color: #eee;
+            margin-top: 50px;
+        }
+        
+        /* Digital Clock Styles */
+        #digital-clock {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border: 2px solid #00d2ff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+        }
+
+        /* Analog Clock Styles */
+        canvas {
+            background: #333;
+            border-radius: 50%;
+            border: 5px solid #555;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="digital-clock">00:00:00</div>
+
+    <canvas id="analog-clock" width="300" height="300"></canvas>
+
+    <script>
+        // === PART 1: DIGITAL CLOCK ===
+        const digitalDisplay = document.querySelector('#digital-clock');
+
+        function updateDigital() {
+            const now = new Date();
+            // .toLocaleTimeString() handles the formatting automatically
+            digitalDisplay.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+        setInterval(updateDigital, 1000); // Update every second
+        updateDigital(); // Run immediately so it doesn't wait 1 sec to appear
+
+        // === PART 2: ANALOG CLOCK (Canvas) ===
+        const canvas = document.querySelector('#analog-clock');
+        const ctx = canvas.getContext('2d');
+        const radius = canvas.width / 2;
+        
+        // Move (0,0) to the center of the canvas
+        ctx.translate(radius, radius);
+
+        function drawAnalog() {
+            const now = new Date();
+            const sec = now.getSeconds();
+            const min = now.getMinutes();
+            const hr = now.getHours();
+
+            // 1. Clear Screen (Need to untranslate to clear, or simple trick: clear huge rect)
+            // Note: Since we translated origin, -radius is top-left
+            ctx.fillStyle = '#333';
+            ctx.fillRect(-radius, -radius, canvas.width, canvas.height);
+
+            // 2. Draw Face
+            ctx.beginPath();
+            ctx.arc(0, 0, radius - 10, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // 3. Draw Hands
+            // Math: angle = (value / max) * 2PI - (PI/2 to rotate top)
+            
+            // SECOND Hand (Red)
+            const secAngle = (sec / 60) * (Math.PI * 2) - (Math.PI / 2);
+            drawHand(secAngle, radius * 0.8, 2, 'red');
+
+            // MINUTE Hand (White)
+            const minAngle = (min / 60) * (Math.PI * 2) + (sec/60 * Math.PI/30) - (Math.PI / 2);
+            drawHand(minAngle, radius * 0.6, 4, 'white');
+
+            // HOUR Hand (White, short)
+            const hrAngle = ((hr % 12) / 12) * (Math.PI * 2) + (min/60 * Math.PI/6) - (Math.PI / 2);
+            drawHand(hrAngle, radius * 0.4, 6, 'white');
+            
+            // Draw Center Dot
+            ctx.beginPath();
+            ctx.arc(0, 0, 5, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+
+            requestAnimationFrame(drawAnalog);
+        }
+
+        function drawHand(angle, length, width, color) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.strokeStyle = color;
+            ctx.lineCap = "round"; // Makes ends of lines rounded
+            ctx.moveTo(0, 0);
+            // Trigonometry to find x, y endpoint
+            ctx.lineTo(Math.cos(angle) * length, Math.sin(angle) * length);
+            ctx.stroke();
+        }
+
+        requestAnimationFrame(drawAnalog);
+    </script>
+</body>
+</html>
