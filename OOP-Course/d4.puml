@@ -1,0 +1,31 @@
+@startuml d4
+skinparam classAttributeIconSize 0
+
+actor Client
+participant API_Gateway
+participant AuthService
+database UserDB
+
+Client -> API_Gateway : POST /login(credentials)
+activate API_Gateway
+
+API_Gateway -> AuthService : authenticate(credentials)
+activate AuthService
+
+AuthService -> UserDB : queryUser(username)
+activate UserDB
+UserDB --> AuthService : return userData
+deactivate UserDB
+
+alt Valid Credentials
+    AuthService --> API_Gateway : return JWT_Token
+    API_Gateway --> Client : 200 OK (Token)
+else Invalid Credentials
+    AuthService --> API_Gateway : return AuthError
+    API_Gateway --> Client : 401 Unauthorized
+end
+
+deactivate AuthService
+deactivate API_Gateway
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml d3
+skinparam classAttributeIconSize 0
+
+class WeatherStation {
+  - temperature: double
+  - observers: List<IObserver>
+  + addObserver(o: IObserver)
+  + notifyObservers()
+  + setTemperature(temp: double)
+}
+
+interface IObserver {
+  + update(temperature: double)
+}
+
+class PhoneApp {
+  - currentTemp: double
+  + update(temperature: double)
+}
+
+class WallDisplay {
+  - currentTemp: double
+  + update(temperature: double)
+}
+
+WeatherStation o-- "0..*" IObserver : notifies >
+IObserver <|.. PhoneApp
+IObserver <|.. WallDisplay
+
+@enduml

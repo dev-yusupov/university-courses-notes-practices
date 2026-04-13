@@ -1,0 +1,28 @@
+@startuml d5
+skinparam classAttributeIconSize 0
+
+participant WebServer
+participant RedisCache
+database PrimaryDB
+
+WebServer -> RedisCache : get(queryKey)
+activate RedisCache
+
+alt Cache Hit
+    RedisCache --> WebServer : return cachedData
+else Cache Miss
+    RedisCache --> WebServer : return null
+    deactivate RedisCache
+    
+    WebServer -> PrimaryDB : executeQuery(SQL)
+    activate PrimaryDB
+    PrimaryDB --> WebServer : return freshData
+    deactivate PrimaryDB
+    
+    WebServer -> RedisCache : set(queryKey, freshData)
+    activate RedisCache
+    RedisCache --> WebServer : ACK
+    deactivate RedisCache
+end
+
+@enduml

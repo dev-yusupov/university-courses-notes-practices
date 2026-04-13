@@ -1,0 +1,23 @@
+@startuml d6
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+actor "Customer" as Cust
+actor "Flight Controller" as FC
+
+rectangle "Drone Execution Engine" {
+  usecase "Request Payload Drop" as UC1
+  usecase "Calculate Trajectory" as UC2
+  usecase "Dispatch Drone" as UC3
+  usecase "Override Flight Path" as UC4
+}
+
+Cust --> UC1
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+
+FC --> UC4
+UC4 ..> UC3 : <<extend>>
+
+@enduml

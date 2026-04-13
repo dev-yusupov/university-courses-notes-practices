@@ -1,0 +1,34 @@
+@startuml d1
+skinparam classAttributeIconSize 0
+
+class SmartHome {
+  - address: String
+  + triggerLockdown()
+}
+
+abstract class Device {
+  - deviceID: String
+  + {abstract} operate()
+}
+
+interface IConnectable {
+  + connectWiFi()
+  + disconnect()
+}
+
+class Light {
+  - brightness: int
+  + operate()
+}
+
+class Thermostat {
+  - targetTemp: double
+  + operate()
+}
+
+SmartHome "1" *-- "1..*" Device : manages >
+IConnectable <|.. Device
+Device <|-- Light
+Device <|-- Thermostat
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml d7
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+actor "Quant Algorithm" as Quant
+actor "Risk Compliance API" as Risk
+
+rectangle "Trade Execution Node" {
+  usecase "Ingest Market Data" as UC1
+  usecase "Execute Block Trade" as UC2
+  usecase "Validate Margin Limits" as UC3
+  usecase "Halt Trading Operations" as UC4
+}
+
+Quant --> UC1
+Quant --> UC2
+
+UC2 ..> UC3 : <<include>>
+
+Risk --> UC4
+UC4 ..> UC2 : <<extend>>
+
+@enduml

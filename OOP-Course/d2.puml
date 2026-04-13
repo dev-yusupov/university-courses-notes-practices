@@ -1,0 +1,29 @@
+@startuml d2
+skinparam classAttributeIconSize 0
+
+class RideRequest {
+  - distanceMiles: double
+  - pricingStrategy: IPricingStrategy
+  + setPricingStrategy(s: IPricingStrategy)
+  + calculateFare(): double
+}
+
+interface IPricingStrategy {
+  + calculate(distance: double): double
+}
+
+class StandardPricing {
+  - baseRate: double
+  + calculate(distance: double): double
+}
+
+class SurgePricing {
+  - multiplier: double
+  + calculate(distance: double): double
+}
+
+RideRequest o-- "1" IPricingStrategy : delegates to >
+IPricingStrategy <|.. StandardPricing
+IPricingStrategy <|.. SurgePricing
+
+@enduml
